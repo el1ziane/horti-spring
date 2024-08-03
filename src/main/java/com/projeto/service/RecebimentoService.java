@@ -41,7 +41,7 @@ public class RecebimentoService {
      }
      public RecebimentoDTO editar(@NotNull @Positive Long id, @Valid RecebimentoDTO recebimento){
         return recebimentoRepository.findById(id).map(registroEncontrado ->{
-            registroEncontrado.setFornecedor(recebimento.fornecedor());
+            registroEncontrado.setFornecedorRec(recebimento.fornecedorRec());
             registroEncontrado.setProduto(recebimento.produto());
             registroEncontrado.setQuantidadeRecebimento(recebimento.quantidadeRecebimento());
             registroEncontrado.setValorRecebimento(recebimento.valorRecebimento());

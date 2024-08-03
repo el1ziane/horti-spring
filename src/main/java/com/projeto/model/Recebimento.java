@@ -41,7 +41,7 @@ private Long id;
 @NotBlank
 @Size(min = 3, max =100)
 @Column(length = 100, nullable = false)
-private String fornecedor;
+private String fornecedorRec;
 
 @NotNull
 @NotBlank
@@ -83,12 +83,12 @@ public void setId(Long id) {
     this.id = id;
 }
 
-public String getFornecedor() {
-    return fornecedor;
+public String getFornecedorRec() {
+    return fornecedorRec;
 }
 
-public void setFornecedor(String fornecedor) {
-    this.fornecedor = fornecedor;
+public void setFornecedorRec(String fornecedorRec) {
+    this.fornecedorRec = fornecedorRec;
 }
 
 public String getProduto() {

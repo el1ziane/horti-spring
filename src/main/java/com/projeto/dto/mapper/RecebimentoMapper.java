@@ -1,7 +1,6 @@
 package com.projeto.dto.mapper;
 
 import org.springframework.stereotype.Component;
-
 import com.projeto.dto.RecebimentoDTO;
 import com.projeto.enums.Status;
 import com.projeto.model.Recebimento;
@@ -13,7 +12,7 @@ public class RecebimentoMapper {
             return null;
         }
         
-        return new RecebimentoDTO(recebimento.getId(), recebimento.getFornecedor(), recebimento.getProduto(),recebimento.getQuantidadeRecebimento(),recebimento.getValorRecebimento(),recebimento.getDataRecebimento(),recebimento.getStatus().getValue());
+        return new RecebimentoDTO(recebimento.getId(), recebimento.getFornecedorRec(), recebimento.getProduto(),recebimento.getQuantidadeRecebimento(),recebimento.getValorRecebimento(),recebimento.getDataRecebimento(),recebimento.getStatus().getValue());
     }
 
     public Recebimento toEntity(RecebimentoDTO recebimentoDTO){
@@ -26,7 +25,7 @@ public class RecebimentoMapper {
         recebimento.setId(recebimentoDTO.id());
        }
 
-       recebimento.setFornecedor(recebimentoDTO.fornecedor());
+       recebimento.setFornecedorRec(recebimentoDTO.fornecedorRec());
        recebimento.setProduto(recebimentoDTO.produto());
        recebimento.setQuantidadeRecebimento(recebimentoDTO.quantidadeRecebimento());
        recebimento.setValorRecebimento(recebimentoDTO.valorRecebimento());
