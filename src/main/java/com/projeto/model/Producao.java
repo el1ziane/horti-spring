@@ -2,15 +2,22 @@ package com.projeto.model;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.projeto.enums.Estado;
+import com.projeto.enums.EstadoConverter;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 
@@ -26,12 +33,29 @@ private Long id;
 @NotNull
 @Min(10)
 @Column(nullable = false)
-private int codigo;
+private Long codigoProducao;
 
 @NotNull
 @Min(10)
 @Column(nullable = false)
 private int quantidadeProducao;
+
+@NotNull
+@NotBlank
+@Size(min = 3, max =100)
+@Column(length = 100, nullable = false)
+private String produtoProducao;
+
+@Column(nullable = false)
+@NotNull
+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+@Pattern(regexp = "\\d{2}-\\d{2}-\\d{4}")
+private String dataProducao;
+
+@NotNull
+@Column(length = 10, nullable = false)
+@Convert(converter = EstadoConverter.class)
+private Estado estado = Estado.ATIVO;
 
 public Long getId() {
     return id;
@@ -41,12 +65,12 @@ public void setId(Long id) {
     this.id = id;
 }
 
-public int getCodigo() {
-    return codigo;
+public Long getCodigoProducao() {
+    return codigoProducao;
 }
 
-public void setCodigo(int codigo) {
-    this.codigo = codigo;
+public void setCodigoProducao(Long codigoProducao) {
+    this.codigoProducao = codigoProducao;
 }
 
 public int getQuantidadeProducao() {
@@ -55,6 +79,30 @@ public int getQuantidadeProducao() {
 
 public void setQuantidadeProducao(int quantidadeProducao) {
     this.quantidadeProducao = quantidadeProducao;
+}
+
+public String getProdutoProducao() {
+    return produtoProducao;
+}
+
+public void setProdutoProducao(String produtoProducao) {
+    this.produtoProducao = produtoProducao;
+}
+
+public String getDataProducao() {
+    return dataProducao;
+}
+
+public void setDataProducao(String dataProducao) {
+    this.dataProducao = dataProducao;
+}
+
+public Estado getEstado() {
+    return estado;
+}
+
+public void setEstado(Estado estado) {
+    this.estado = estado;
 }
 
 

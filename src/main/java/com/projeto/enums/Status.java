@@ -1,7 +1,14 @@
 package com.projeto.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum Status {
-    PAGO("Pago"), PENDENTE("Pendente");
+    PAGO("Pago"), 
+    PENDENTE("Pendente"), 
+    RECEBIDO("Recebido"), 
+    PESO("PESO"), 
+    CAIXA("CAIXA");
 
     private String value;
 
@@ -9,17 +16,24 @@ public enum Status {
         this.value = value;
     }
 
+    @JsonValue
     public String getValue() {
         return value;
-        
-
     }
 
-    // toString
+    @JsonCreator
+    public static Status fromValue(String value) {
+        for (Status status : Status.values()) {
+            if (status.getValue().equalsIgnoreCase(value)) {
+                return status;
+            }
+        }
+        throw new IllegalArgumentException("Valor inválido para Status: " + value);
+    }
+
     @Override
     public String toString() {
         return value;
     }
-
-    
 }
+

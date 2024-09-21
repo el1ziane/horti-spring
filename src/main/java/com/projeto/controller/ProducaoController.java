@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.dto.ProducaoDTO;
-
+import com.projeto.model.Producao;
 import com.projeto.service.ProducaoService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -45,8 +45,8 @@ public class ProducaoController {
     //medoto
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ProducaoDTO adicionar(@RequestBody @Valid ProducaoDTO producao){
-        System.out.println(producao);
+    public Producao adicionar(@RequestBody @Valid ProducaoDTO producao){
+        System.out.println(producao.codigoProducao());
         return producaoService.adicionar(producao);
     }
     @PutMapping("/{id}")

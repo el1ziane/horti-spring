@@ -30,7 +30,7 @@ private Long id;
 @NotNull
 @Min(10)
 @Column(nullable = false)
-private int codigo;
+private Long codigo;
 
 @NotNull
 @NotBlank
@@ -66,11 +66,11 @@ public void setId(Long id) {
     this.id = id;
 }
 
-public int getCodigo() {
+public Long getCodigo() {
     return codigo;
 }
 
-public void setCodigo(int codigo) {
+public void setCodigo(Long codigo) {
     this.codigo = codigo;
 }
 

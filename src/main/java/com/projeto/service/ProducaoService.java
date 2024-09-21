@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import com.projeto.dto.ProducaoDTO;
 import com.projeto.dto.mapper.ProducaoMapper;
 import com.projeto.exception.RecordNotFoundException;
+import com.projeto.model.Producao;
 import com.projeto.repository.ProducaoRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -36,12 +37,21 @@ public class ProducaoService {
         return producaoRepository.findById(id).map(producaoMapper::toDTO)
         .orElseThrow(()-> new RecordNotFoundException(id));
     }
-     public ProducaoDTO adicionar( @Valid @NotNull ProducaoDTO producao){
-        return producaoMapper.toDTO(producaoRepository.save(producaoMapper.toEntity(producao)));
+     public Producao adicionar( @Valid @NotNull ProducaoDTO producao){
+        Producao p = new Producao();
+        p.setCodigoProducao(producao.codigoProducao());
+        p.setProdutoProducao(producao.produtoProducao());
+        p.setQuantidadeProducao(producao.quantidadeProducao());
+        p.setDataProducao(producao.dataProducao());
+        return producaoRepository.save(p);
+
      }
      public ProducaoDTO editar(@NotNull @Positive Long id, @Valid ProducaoDTO producao){
         return producaoRepository.findById(id).map(registroEncontrado ->{
-            registroEncontrado.setCodigo(producao.codigo());
+            registroEncontrado.setCodigoProducao(producao.codigoProducao());
+            registroEncontrado.setQuantidadeProducao(producao.quantidadeProducao());
+            registroEncontrado.setProdutoProducao(producao.produtoProducao());
+            registroEncontrado.setDataProducao(producao.dataProducao());
             return producaoMapper.toDTO(producaoRepository.save(registroEncontrado));
         }).orElseThrow(()-> new RecordNotFoundException(id));
 

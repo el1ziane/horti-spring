@@ -12,7 +12,7 @@ public class ProducaoMapper {
           return null;
       }
       
-      return new ProducaoDTO(producao.getId(), producao.getCodigo(), producao.getQuantidadeProducao());
+      return new ProducaoDTO(producao.getId(), producao.getCodigoProducao(), producao.getQuantidadeProducao(), producao.getProdutoProducao(), producao.getDataProducao());
   }
 
   public Producao toEntity(ProducaoDTO producaoDTO){
@@ -25,7 +25,7 @@ public class ProducaoMapper {
       producao.setId(producaoDTO.id());
      }
 
-     producao.setCodigo(producaoDTO.codigo());
+     producao.setCodigoProducao(producaoDTO.codigoProducao());
      producao.setQuantidadeProducao(producaoDTO.quantidadeProducao());
      
      return producao;
