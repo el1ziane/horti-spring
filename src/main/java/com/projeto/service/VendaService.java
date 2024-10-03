@@ -54,7 +54,6 @@ public class VendaService {
             registroEncontrado.setProdutoVenda(venda.produtoVenda());
             registroEncontrado.setQuantidadeVenda(venda.quantidadeVenda());
             registroEncontrado.setValorVenda(venda.valorVenda());
-         //   registroEncontrado.setPeriodoVenda(venda.periodoVenda());
             registroEncontrado.setDataInicial(venda.dataInicial());
             registroEncontrado.setDataFinal(venda.dataFinal());
             registroEncontrado.setStatusVenda(vendaMapper.convertStatusValue(venda.statusVenda()));

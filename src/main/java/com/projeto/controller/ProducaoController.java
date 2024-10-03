@@ -46,7 +46,7 @@ public class ProducaoController {
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public Producao adicionar(@RequestBody @Valid ProducaoDTO producao){
-        System.out.println(producao.codigoProducao());
+        System.out.println(producao);
         return producaoService.adicionar(producao);
     }
     @PutMapping("/{id}")
