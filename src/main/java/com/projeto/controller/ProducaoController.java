@@ -16,16 +16,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.dto.ProducaoDTO;
-import com.projeto.model.Producao;
+import com.projeto.model.Produto;
 import com.projeto.service.ProducaoService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 @Validated
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/producao")
-@CrossOrigin(origins = "http://localhost:4200")
+
 public class ProducaoController {
        private final ProducaoService producaoService;
 
@@ -42,10 +44,17 @@ public class ProducaoController {
         return producaoService.findById(id);
 
     }
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/produto/{produtoNome}")
+    public Produto findByProdutoNome(@PathVariable @NotNull @NotBlank String produtoNome) {
+        return producaoService.findByProdutoNome(produtoNome);
+    }
+    
+    
     //medoto
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Producao adicionar(@RequestBody @Valid ProducaoDTO producao){
+    public ProducaoDTO adicionar(@RequestBody @Valid ProducaoDTO producao){
         System.out.println(producao);
         return producaoService.adicionar(producao);
     }

@@ -18,7 +18,7 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 
-@SQLDelete(sql = "UPDATE Produto SET estado = 'Inativo' WHERE id=?")
+@SQLDelete(sql = "UPDATE Fornecedor SET estado = 'Inativo' WHERE id=?")
 //@Where(clause = "estado = 'Ativo'")
 @SQLRestriction("estado <> 'Inativo'")
 public class Fornecedor {

@@ -17,11 +17,10 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 
 @Entity
 
-@SQLDelete(sql = "UPDATE Produto SET estado = 'Inativo' WHERE id=?")
+@SQLDelete(sql = "UPDATE Producao SET estado = 'Inativo' WHERE id=?")
 //@Where(clause = "estado = 'Ativo'")
 @SQLRestriction("estado <> 'Inativo'")
 public class Producao {
@@ -36,19 +35,17 @@ private Long id;
 private Long codigoProducao;
 
 @NotNull
-@Min(10)
 @Column(nullable = false)
 private int quantidadeProducao;
 
 @NotNull
 @NotBlank
-@Size(min = 3, max =100)
 @Column(length = 100, nullable = false)
 private String produtoProducao;
 
 @Column(nullable = false)
 @NotNull
- @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 @Pattern(regexp = "\\d{2}-\\d{2}-\\d{4}")
 private String dataProducao;
 

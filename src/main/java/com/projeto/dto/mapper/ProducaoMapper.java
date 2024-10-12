@@ -26,6 +26,8 @@ public class ProducaoMapper {
      }
 
      producao.setCodigoProducao(producaoDTO.codigoProducao());
+     producao.setDataProducao(producaoDTO.dataProducao());
+     producao.setProdutoProducao(producaoDTO.produtoProducao());
      producao.setQuantidadeProducao(producaoDTO.quantidadeProducao());
      
      return producao;

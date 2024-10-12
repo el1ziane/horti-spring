@@ -20,7 +20,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
 
 
 
@@ -40,11 +39,11 @@ private Long id;
 @NotNull
 @Min(10)
 @Column(nullable = false)
-private int codigoVenda;
+private Long codigoVenda;
+
 
 @NotNull
 @NotBlank
-@Size(min = 3, max =100)
 @Column(length = 100, nullable = false)
 private String produtoVenda;
 
@@ -90,11 +89,11 @@ public void setId(Long id) {
     this.id = id;
 }
 
-public int getCodigoVenda() {
+public Long getCodigoVenda() {
     return codigoVenda;
 }
 
-public void setCodigoVenda(int codigoVenda)  {
+public void setCodigoVenda(Long codigoVenda)  {
     this.codigoVenda = codigoVenda;
 }
 

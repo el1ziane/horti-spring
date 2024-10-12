@@ -9,9 +9,11 @@ import com.projeto.dto.EstoqueDTO;
 import com.projeto.dto.mapper.EstoqueMapper;
 import com.projeto.exception.RecordNotFoundException;
 import com.projeto.model.Estoque;
+import com.projeto.model.Produto;
 import com.projeto.repository.EstoqueRepository;
+import com.projeto.repository.ProdutoRepository;
 
-import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -20,10 +22,12 @@ import jakarta.validation.constraints.Positive;
 public class EstoqueService {
     private final EstoqueRepository estoqueRepository; 
     private final EstoqueMapper estoqueMapper;
+    private final ProdutoRepository produtoRepository;
 
-    public EstoqueService(EstoqueRepository estoqueRepository, EstoqueMapper estoqueMapper){
+    public EstoqueService(EstoqueRepository estoqueRepository, EstoqueMapper estoqueMapper, ProdutoRepository produtoRepository) {
         this.estoqueRepository = estoqueRepository;
         this.estoqueMapper = estoqueMapper;
+        this.produtoRepository = produtoRepository;
     }
 
     public List<EstoqueDTO> lista() {
@@ -42,7 +46,26 @@ public class EstoqueService {
             .map(estoqueMapper::toDTO)
             .orElseThrow(() -> new RecordNotFoundException(id));
     }
-
+      public Produto findByProdutoNome(@NotNull @NotBlank String nomeProduto) {
+        return produtoRepository.findByProdutoNome(nomeProduto)
+                .orElseThrow(() -> new RecordNotFoundException("Produto não encontrado!"));
+    }
+   // Método para obter a quantidade total de itens em estoque
+   public int getQuantidadeEstoque() {
+    return estoqueRepository.findAll().stream()
+            .mapToInt(Estoque::getQuantidadeEstoque)
+            .sum();
+}
+    public EstoqueDTO atualizarEstoque(EstoqueDTO estoqueDTO) {
+        Estoque estoque = estoqueMapper.toEntity(estoqueDTO);
+        // Aqui você deve buscar o produto e definir o valor unitário
+        Produto produto = produtoRepository.findById(estoque.getProdutoEstoque().getId())
+            .orElseThrow(() -> new RecordNotFoundException("Produto não encontrado!"));
+        estoque.setValorUnitarioEstoque(produto.getValorProduto());
+        estoque = estoqueRepository.save(estoque);
+        return estoqueMapper.toDTO(estoque);
+    }
+    
 
     public void excluir(@NotNull @Positive Long id) {
         estoqueRepository.delete(estoqueRepository.findById(id)

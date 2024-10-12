@@ -14,10 +14,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 @Entity
 
 @SQLDelete(sql = "UPDATE Estoque SET estado = 'Inativo' WHERE id=?")
@@ -35,11 +36,11 @@ private Long id;
 private Long codigoEstoque;
 
 
-@Size(min = 3, max =100)
-@Column(length = 100, nullable = false)
-private String produtoEstoque;
 
-@Min(10)
+ @ManyToOne
+@JoinColumn(name = "produto_id", nullable = false)  
+private Produto produtoEstoque;
+
 @Column(nullable = false)
 private int quantidadeEstoque;
 
@@ -60,8 +61,9 @@ private String dataEstoque;
 @Column(length = 10, nullable = false)
 @Convert(converter = EstadoConverter.class)
 private Estado estado = Estado.ATIVO;
+ // Getters e setters
 
-public Long getId() {
+ public Long getId() {
     return id;
 }
 
@@ -77,19 +79,22 @@ public void setCodigoEstoque(Long codigoEstoque) {
     this.codigoEstoque = codigoEstoque;
 }
 
-public String getProdutoEstoque() {
+public Produto getProdutoEstoque() {
     return produtoEstoque;
 }
 
-public void setProdutoEstoque(String produtoEstoque) {
+public void setProdutoEstoque(Produto produtoEstoque) {
     this.produtoEstoque = produtoEstoque;
+    recalcularValorTotal(); // Recalcula o valor total sempre que o produto é alterado
 }
 
 public int getQuantidadeEstoque() {
     return quantidadeEstoque;
 }
+
 public void setQuantidadeEstoque(int quantidadeEstoque) {
     this.quantidadeEstoque = quantidadeEstoque;
+    recalcularValorTotal(); // Recalcula o valor total sempre que a quantidade muda
 }
 
 public double getValorUnitarioEstoque() {
@@ -98,6 +103,7 @@ public double getValorUnitarioEstoque() {
 
 public void setValorUnitarioEstoque(double valorUnitarioEstoque) {
     this.valorUnitarioEstoque = valorUnitarioEstoque;
+    recalcularValorTotal(); // Recalcula o valor total sempre que o valor unitário muda
 }
 
 public double getValorTotalEstoque() {
@@ -107,6 +113,7 @@ public double getValorTotalEstoque() {
 public void setValorTotalEstoque(double valorTotalEstoque) {
     this.valorTotalEstoque = valorTotalEstoque;
 }
+
 
 public String getDataEstoque() {
     return dataEstoque;
@@ -124,5 +131,8 @@ public void setEstado(Estado estado) {
     this.estado = estado;
 }
 
+// Método para recalcular o valor total do estoque
+private void recalcularValorTotal() {
+    this.valorTotalEstoque = this.quantidadeEstoque * this.valorUnitarioEstoque;
 }
-
+}

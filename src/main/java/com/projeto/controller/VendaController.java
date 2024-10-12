@@ -1,6 +1,7 @@
 package com.projeto.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,10 +15,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.dto.VendaDTO;
-import com.projeto.model.Venda;
+import com.projeto.model.Produto;
 import com.projeto.service.VendaService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
@@ -43,10 +45,16 @@ public class VendaController {
         return vendaService.findById(id);
 
     }
+      @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/produto/{produtoNome}")
+    public Produto findByProdutoNome(@PathVariable @NotNull @NotBlank String produtoNome) {
+        return vendaService.findByProdutoNome(produtoNome);
+    }
+    
     //medoto
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Venda adicionar(@RequestBody @Valid VendaDTO venda){
+    public VendaDTO adicionar(@RequestBody @Valid VendaDTO venda){
         System.out.println(venda);
         return vendaService.adicionar(venda);
     }
@@ -58,5 +66,10 @@ public class VendaController {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void excluir(@PathVariable @NotNull @Positive Long id){
         vendaService.excluir(id);
+    }
+      @GetMapping("/valor-total")
+    public ResponseEntity<Double> getValorTotalVendas() {
+        double valorTotal = vendaService.getValorTotalVendas();
+        return ResponseEntity.ok(valorTotal);
     }
 }

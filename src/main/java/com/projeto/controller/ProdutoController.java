@@ -22,7 +22,7 @@ import jakarta.validation.constraints.Positive;
 
 @Validated
 @RestController
-@RequestMapping("/api/produtos")
+@RequestMapping("/api/produto")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ProdutoController {
       private final ProdutoService produtoService;

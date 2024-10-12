@@ -7,7 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import com.projeto.dto.RecebimentoDTO;
 import com.projeto.dto.mapper.RecebimentoMapper;
+import com.projeto.enums.Status;
 import com.projeto.exception.RecordNotFoundException;
+import com.projeto.model.Despesa;
+import com.projeto.model.Recebimento;
 import com.projeto.repository.RecebimentoRepository;
 
 import jakarta.validation.Valid;
@@ -32,10 +35,22 @@ public class RecebimentoService {
         .map(recebimentoMapper::toDTO)
         .collect(Collectors.toList());
     }
+ 
     public RecebimentoDTO findById(@NotNull @Positive Long id){
         return recebimentoRepository.findById(id).map(recebimentoMapper::toDTO)
         .orElseThrow(()-> new RecordNotFoundException(id));
     }
+    public double getTotalComprasPendentes() {
+        return recebimentoRepository.findAll().stream()
+            .filter(recebimento -> {
+               // System.out.println("Valor: " + recebimento.getValorRecebimento());
+                return Status.PENDENTE.equals(recebimento.getStatus()); // Comparando com a enumeração
+            })
+            .mapToDouble(Recebimento::getValorRecebimento)
+            .sum();
+    }
+    
+    
      public RecebimentoDTO adicionar( @Valid @NotNull RecebimentoDTO recebimento){
         return recebimentoMapper.toDTO(recebimentoRepository.save(recebimentoMapper.toEntity(recebimento)));
      }

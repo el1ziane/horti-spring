@@ -1,6 +1,7 @@
 package com.projeto.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -56,5 +57,11 @@ public class RecebimentoController {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void excluir(@PathVariable @NotNull @Positive Long id){
         recebimentoService.excluir(id);
+    }
+
+    @GetMapping("/total-compras-pendentes")
+    public ResponseEntity<Double> getTotalComprasPendentes() {
+        double totalRecebimento = recebimentoService.getTotalComprasPendentes();
+        return ResponseEntity.ok(totalRecebimento);
     }
 }

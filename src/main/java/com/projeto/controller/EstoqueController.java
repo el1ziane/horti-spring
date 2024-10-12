@@ -2,16 +2,17 @@ package com.projeto.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.projeto.dto.EstoqueDTO;
+import com.projeto.model.Produto;
 import com.projeto.service.EstoqueService;
-
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -30,10 +31,24 @@ public class EstoqueController {
     public List<EstoqueDTO> lista() {
         return estoqueService.lista();
     }
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/produto/{produtoNome}")
+    public Produto findByProdutoNome(@PathVariable @NotNull @NotBlank String produtoNome) {
+        return estoqueService.findByProdutoNome(produtoNome);
+    }
+    
 
     @GetMapping("/{id}")
     public EstoqueDTO findById(@PathVariable @NotNull @Positive Long id){
         return estoqueService.findById(id);
     }
+    @GetMapping("/quantidade") // Alterado para /quantidade para clareza
+    public ResponseEntity<Integer> getQuantidadeEstoque() {
+        int quantidade = estoqueService.getQuantidadeEstoque();
+        return ResponseEntity.ok(quantidade);
+    }
+
 
 }
+
+
