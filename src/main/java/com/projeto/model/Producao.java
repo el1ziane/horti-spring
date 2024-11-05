@@ -1,4 +1,6 @@
 package com.projeto.model;
+import java.time.LocalDate;
+
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -13,6 +15,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -38,16 +42,14 @@ private Long codigoProducao;
 @Column(nullable = false)
 private int quantidadeProducao;
 
-@NotNull
-@NotBlank
-@Column(length = 100, nullable = false)
-private String produtoProducao;
+@ManyToOne 
+@JoinColumn
+private Produto produtoProducao;
 
 @Column(nullable = false)
 @NotNull
 @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-@Pattern(regexp = "\\d{2}-\\d{2}-\\d{4}")
-private String dataProducao;
+private LocalDate dataProducao;
 
 @NotNull
 @Column(length = 10, nullable = false)
@@ -78,19 +80,19 @@ public void setQuantidadeProducao(int quantidadeProducao) {
     this.quantidadeProducao = quantidadeProducao;
 }
 
-public String getProdutoProducao() {
+public Produto getProdutoProducao() {
     return produtoProducao;
 }
 
-public void setProdutoProducao(String produtoProducao) {
+public void setProdutoProducao(Produto produtoProducao) {
     this.produtoProducao = produtoProducao;
 }
 
-public String getDataProducao() {
+public LocalDate getDataProducao() {
     return dataProducao;
 }
 
-public void setDataProducao(String dataProducao) {
+public void setDataProducao(LocalDate dataProducao) {
     this.dataProducao = dataProducao;
 }
 

@@ -1,5 +1,7 @@
 package com.projeto.model;
 
+import java.time.LocalDate;
+
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -16,144 +18,138 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Min;
 
-
-
 @Entity
-//@Table(name = "vendas")
-
 @SQLDelete(sql = "UPDATE Venda SET estado = 'Inativo' WHERE id=?")
-//@Where(clause = "estado = 'Ativo'")
 @SQLRestriction("estado <> 'Inativo'")
-
 public class Venda {
-@Id
-@GeneratedValue(strategy = GenerationType.AUTO)
-@JsonProperty("_id")
-private Long id;
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty("_id")
+    private Long id;
 
-@NotNull
-@Min(10)
-@Column(nullable = false)
-private Long codigoVenda;
+    @NotNull
+    @Min(10)
+    @Column(nullable = false)
+    private Long codigoVenda;
 
+ 
 
-@NotNull
-@NotBlank
-@Column(length = 100, nullable = false)
-private String produtoVenda;
+    @ManyToOne 
+    @JoinColumn(name = "produto_venda_id", nullable = false)
+    private Produto produtoVenda;  
 
-@NotNull
-@Min(1)
-@Column(nullable = false)
-private int quantidadeVenda;
+    @NotNull
+    @Min(1)
+    @Column(nullable = false)
+    private int quantidadeVenda;
 
-@NotNull
-@Min(0)
-@Column(nullable = false)
-private double valorVenda;
+    @NotNull
+    @Min(1)
+    @Column(nullable = false)
+    private double valorVenda;
 
+    @Column(nullable = false)
+    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private LocalDate dataInicial;
 
+    @Column(nullable = false)
+    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private LocalDate dataFinal;
 
-@Column(nullable = false)
-@NotNull
- @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-@Pattern(regexp = "\\d{2}-\\d{2}-\\d{4}")
-private String dataInicial;
+    @Column(length = 20,nullable = false)
+    @Convert(converter = StatusConverter.class)
+    private Status statusVenda;
 
-@Column(nullable = false)
-@NotNull
- @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-@Pattern(regexp = "\\d{2}-\\d{2}-\\d{4}")
-private String dataFinal;
+    @NotNull
+    @Column(length = 10, nullable = false)
+    @Convert(converter = EstadoConverter.class)
+    private Estado estado = Estado.ATIVO;
 
-//@Pattern(regexp = "Recebido|Pendente")
-@Column(nullable = false)
-@Convert(converter = StatusConverter.class)
-private Status statusVenda;
+    // Construtor sem argumentos
+    public Venda() {}
 
-@NotNull
-@Column(length = 10, nullable = false)
-@Convert(converter = EstadoConverter.class)
-private Estado estado = Estado.ATIVO;
+    // Getters e Setters
 
-public Long getId() {
-    return id;
-}
+    public Long getId() {
+        return id;
+    }
 
-public void setId(Long id) {
-    this.id = id;
-}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-public Long getCodigoVenda() {
-    return codigoVenda;
-}
+    public Long getCodigoVenda() {
+        return codigoVenda;
+    }
 
-public void setCodigoVenda(Long codigoVenda)  {
-    this.codigoVenda = codigoVenda;
-}
-
-public String getProdutoVenda() {
-    return produtoVenda;
-}
-
-public void setProdutoVenda(String produtoVenda) {
-    this.produtoVenda = produtoVenda;
-}
-
-public int getQuantidadeVenda() {
-    return quantidadeVenda;
-}
-
-public void setQuantidadeVenda(int quantidadeVenda) {
-    this.quantidadeVenda = quantidadeVenda;
-}
-
-public double getValorVenda() {
-    return valorVenda;
-}
-
-public void setValorVenda(double valorVenda) {
-    this.valorVenda = valorVenda;
-}
+    public void setCodigoVenda(Long codigoVenda) {
+        this.codigoVenda = codigoVenda;
+    }
 
 
+    public Produto getProdutoVenda() {
+        return produtoVenda;
+    }
 
-public String getDataInicial() {
-    return dataInicial;
-}
+    public void setProdutoVenda(Produto produtoVenda) {
+        this.produtoVenda = produtoVenda;
+    }
 
-public void setDataInicial(String dataInicial) {
-    this.dataInicial = dataInicial;
-}
+    public int getQuantidadeVenda() {
+        return quantidadeVenda;
+    }
 
-public String getDataFinal() {
-    return dataFinal;
-}
+    public void setQuantidadeVenda(int quantidadeVenda) {
+        this.quantidadeVenda = quantidadeVenda;
+    }
 
-public void setDataFinal(String dataFinal) {
-    this.dataFinal = dataFinal;
-}
+    public double getValorVenda() {
+        return valorVenda;
+    }
 
-public Status getStatusVenda() {
-    return statusVenda;
-}
+    public void setValorVenda(double valorVenda) {
+        this.valorVenda = valorVenda;
+    }
 
-public void setStatusVenda(Status statusVenda) {
-    this.statusVenda = statusVenda;
-}
+    public LocalDate getDataInicial() {
+        return dataInicial;
+    }
 
-public Estado getEstado() {
-    return estado;
-}
+    public void setDataInicial(LocalDate dataInicial) {
+        this.dataInicial = dataInicial;
+    }
 
-public void setEstado(Estado estado) {
-    this.estado = estado;
-}
+    public LocalDate getDataFinal() {
+        return dataFinal;
+    }
 
+    public void setDataFinal(LocalDate dataFinal) {
+        this.dataFinal = dataFinal;
+    }
 
+    public Status getStatusVenda() {
+        return statusVenda;
+    }
+
+    public void setStatusVenda(Status statusVenda) {
+        this.statusVenda = statusVenda;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
 }

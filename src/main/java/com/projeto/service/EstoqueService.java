@@ -36,11 +36,7 @@ public class EstoqueService {
         .map(estoqueMapper::toDTO)
         .collect(Collectors.toList());
     }
- public EstoqueDTO adicionarEstoque(EstoqueDTO estoqueDTO) {
-        Estoque estoque = estoqueMapper.toEntity(estoqueDTO);
-        estoque = estoqueRepository.save(estoque);
-        return estoqueMapper.toDTO(estoque);
-    }
+
     public EstoqueDTO findById(@NotNull @Positive Long id) {
         return estoqueRepository.findById(id)
             .map(estoqueMapper::toDTO)
@@ -50,7 +46,7 @@ public class EstoqueService {
         return produtoRepository.findByProdutoNome(nomeProduto)
                 .orElseThrow(() -> new RecordNotFoundException("Produto não encontrado!"));
     }
-   // Método para obter a quantidade total de itens em estoque
+   
    public int getQuantidadeEstoque() {
     return estoqueRepository.findAll().stream()
             .mapToInt(Estoque::getQuantidadeEstoque)
@@ -67,8 +63,17 @@ public class EstoqueService {
     }
     
 
-    public void excluir(@NotNull @Positive Long id) {
-        estoqueRepository.delete(estoqueRepository.findById(id)
-            .orElseThrow(() -> new RecordNotFoundException(id)));
+    public EstoqueDTO removerQuantidadeEstoque(Long id, int quantidadeRemovida) {
+        Estoque estoque = estoqueRepository.findById(id)
+            .orElseThrow(() -> new RecordNotFoundException(id));
+    
+        if (estoque.getQuantidadeEstoque() < quantidadeRemovida) {
+            throw new IllegalArgumentException("Quantidade a ser removida é maior do que o estoque disponível.");
+        }
+    
+        estoque.setQuantidadeEstoque(estoque.getQuantidadeEstoque() - quantidadeRemovida);
+        estoque = estoqueRepository.save(estoque);
+        return estoqueMapper.toDTO(estoque);
     }
+    
 }

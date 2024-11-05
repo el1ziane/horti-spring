@@ -7,6 +7,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.projeto.dto.EstoqueDTO;
@@ -42,11 +44,20 @@ public class EstoqueController {
     public EstoqueDTO findById(@PathVariable @NotNull @Positive Long id){
         return estoqueService.findById(id);
     }
-    @GetMapping("/quantidade") // Alterado para /quantidade para clareza
+    @GetMapping("/quantidade") 
     public ResponseEntity<Integer> getQuantidadeEstoque() {
         int quantidade = estoqueService.getQuantidadeEstoque();
         return ResponseEntity.ok(quantidade);
     }
+
+    @PutMapping("/{id}/remover")
+    public ResponseEntity<EstoqueDTO> removerQuantidadeEstoque(
+        @PathVariable Long id,
+        @RequestBody int quantidade) {
+        EstoqueDTO atualizado = estoqueService.removerQuantidadeEstoque(id, quantidade);
+        return ResponseEntity.ok(atualizado);
+    }
+    
 
 
 }

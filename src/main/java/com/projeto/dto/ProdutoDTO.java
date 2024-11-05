@@ -11,9 +11,10 @@ public record ProdutoDTO(
     @JsonProperty("_id") Long id,
     @NotNull @Min(10) Long codigo,
     @NotNull @NotBlank @Size(min = 3, max =100) String produtoNome,
-    @NotNull @Min(0) double peso,
-    @NotNull @Min(10) int quantidadeProduto,
-    @NotNull @Min(0) double valorProduto) {
+    @NotNull @Min(1) double peso,
+    @NotNull @Min(1) int quantidadeProduto,
+    @NotNull @Min(1) int quantidadePorCaixa,
+    @NotNull @Min(1) double valorProduto) {
         
     }
 

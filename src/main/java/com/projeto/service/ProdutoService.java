@@ -43,6 +43,7 @@ public class ProdutoService {
             registroEncontrado.setPeso(produto.peso());
             registroEncontrado.setQuantidadeProduto(produto.quantidadeProduto());
             registroEncontrado.setValorProduto(produto.valorProduto());
+            registroEncontrado.setQuantidadePorCaixa(produto.quantidadePorCaixa());
             return produtoMapper.toDTO(produtoRepository.save(registroEncontrado));
         }).orElseThrow(()-> new RecordNotFoundException(id));
 

@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.dto.RecebimentoDTO;
+import com.projeto.model.Produto;
 import com.projeto.service.RecebimentoService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
@@ -42,6 +44,8 @@ public class RecebimentoController {
         return recebimentoService.findById(id);
 
     }
+    
+
     //medoto
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)

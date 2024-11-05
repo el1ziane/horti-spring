@@ -63,14 +63,14 @@ public class EstimativaService {
     }
     
     private Double calcularResultado(Estimativa estimativa) {
-        // Exemplo de cálculo baseado no tipo de entrada
         if (estimativa.getTipoEntrada().equals(Status.PESO)) {
-            return estimativa.getPesoEstimativa() * 2;
+            // Cálculo: dividir o peso estimado pelo peso de cada bandeja (produto)
+            return estimativa.getPesoEstimativa() / estimativa.getProduto().getPeso();
         } else if (estimativa.getTipoEntrada().equals(Status.CAIXA)) {
-            return (double) (estimativa.getCaixaEstimativa() * 3);
+            // Cálculo para caixas (ajustar conforme a necessidade)
+            return (double) (estimativa.getCaixaEstimativa() * estimativa.getProduto().getQuantidadePorCaixa());
         }
         return 0.0;
     }
-    
 
 }

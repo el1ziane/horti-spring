@@ -10,10 +10,12 @@ import com.projeto.dto.mapper.RecebimentoMapper;
 import com.projeto.enums.Status;
 import com.projeto.exception.RecordNotFoundException;
 import com.projeto.model.Despesa;
+import com.projeto.model.Produto;
 import com.projeto.model.Recebimento;
 import com.projeto.repository.RecebimentoRepository;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -40,6 +42,8 @@ public class RecebimentoService {
         return recebimentoRepository.findById(id).map(recebimentoMapper::toDTO)
         .orElseThrow(()-> new RecordNotFoundException(id));
     }
+
+  
     public double getTotalComprasPendentes() {
         return recebimentoRepository.findAll().stream()
             .filter(recebimento -> {

@@ -56,7 +56,7 @@ public class ProducaoService {
    
     public ProducaoDTO adicionar(@Valid @NotNull ProducaoDTO producaoDTO) {
         // Recupera o produto pelo nome
-        Produto produto = produtoRepository.findByProdutoNome(producaoDTO.produtoProducao())
+        Produto produto = produtoRepository.findByProdutoNome(producaoDTO.produtoProducao().getProdutoNome())
                 .orElseThrow(() -> new RecordNotFoundException("Produto não encontrado!"));
     
      
@@ -98,7 +98,7 @@ estoque.setValorUnitarioEstoque(produto.getValorProduto()); // Certifique-se de 
         return producaoRepository.findById(id).map(registroEncontrado -> {
             
             // Obtém o produto associado à produção
-            Produto produto = produtoRepository.findByProdutoNome(producaoDTO.produtoProducao())
+            Produto produto = produtoRepository.findByProdutoNome(producaoDTO.produtoProducao().getProdutoNome())
                     .orElseThrow(() -> new RecordNotFoundException("Produto não encontrado!"));
             
             // Atualiza os dados da produção
@@ -143,10 +143,30 @@ estoque.setValorUnitarioEstoque(produto.getValorProduto()); // Certifique-se de 
  
     public void excluir(@NotNull @Positive Long id) {
         producaoRepository.findById(id).ifPresent(producao -> {
-       
+            // Encontrar o produto associado à produção
+            Produto produto = produtoRepository.findByProdutoNome(producao.getProdutoProducao().getProdutoNome())
+                    .orElseThrow(() -> new RecordNotFoundException("Produto não encontrado!"));
+    
+            // Verificar se existe estoque associado ao produto
+            Estoque estoque = estoqueRepository.findByCodigoEstoque(produto.getCodigo())
+                    .orElseThrow(() -> new RecordNotFoundException("Estoque não encontrado para o produto."));
+    
+            // Subtrair a quantidade da produção do estoque
+            Integer quantidadeProducao = producao.getQuantidadeProducao();
+            estoque.setQuantidadeEstoque(estoque.getQuantidadeEstoque() - quantidadeProducao);
+    
+            // Atualizar o valor total do estoque
+            double valorTotal = estoque.getQuantidadeEstoque() * estoque.getValorUnitarioEstoque();
+            estoque.setValorTotalEstoque(valorTotal);
+    
+            // Salvar o estoque atualizado
+            estoqueRepository.save(estoque);
+    
+            // Excluir a produção
             producaoRepository.delete(producao);
         });
     }
+    
 
 
 }

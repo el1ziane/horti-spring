@@ -29,7 +29,6 @@ private Long id;
 
 @NotNull
 @NotBlank
-@Size(min = 3, max =100)
 @Column(length = 100, nullable = false)
 private String fornecedorNome;
 

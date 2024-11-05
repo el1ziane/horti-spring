@@ -14,6 +14,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -56,6 +58,20 @@ private Double resultado;
 @Column(length = 10, nullable = false)
 @Convert(converter = EstadoConverter.class)
 private Estado estado = Estado.ATIVO;
+
+@ManyToOne // ou @OneToOne dependendo da necessidade
+    @JoinColumn(name = "produto_id", nullable = false) // chave estrangeira para produto
+    private Produto produto;  // Associa a estimativa ao produto
+
+    // Getters e setters...
+    
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
 
 public Long getId() {
     return id;

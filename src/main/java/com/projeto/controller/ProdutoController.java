@@ -30,6 +30,8 @@ public class ProdutoController {
     public ProdutoController(ProdutoService produtoService){
         this.produtoService = produtoService;
     }
+    
+    
     @GetMapping
     public List<ProdutoDTO> lista() {
         return produtoService.lista();

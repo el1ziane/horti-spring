@@ -1,5 +1,7 @@
 package com.projeto.model;
 
+import java.time.LocalDate;
+
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -16,6 +18,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -43,11 +47,9 @@ private Long id;
 @Column(length = 100, nullable = false)
 private String fornecedorRec;
 
-@NotNull
-@NotBlank
-@Size(min = 3, max =100)
-@Column(length = 100, nullable = false)
-private String produto;
+@ManyToOne 
+@JoinColumn
+private Produto produto;
 
 @NotNull
 @Min(1)
@@ -61,9 +63,8 @@ private double valorRecebimento;
 
 @Column(nullable = false)
 @NotNull
- @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-@Pattern(regexp = "\\d{2}-\\d{2}-\\d{4}")
-private String dataRecebimento;
+@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+private LocalDate dataRecebimento;
 
 //@Pattern(regexp = "Pago|A faturar")
 @Column(nullable = false)
@@ -91,11 +92,11 @@ public void setFornecedorRec(String fornecedorRec) {
     this.fornecedorRec = fornecedorRec;
 }
 
-public String getProduto() {
+public Produto getProduto() {
     return produto;
 }
 
-public void setProduto(String produto) {
+public void setProduto(Produto produto) {
     this.produto = produto;
 }
 
@@ -115,11 +116,11 @@ public void setValorRecebimento(double valorRecebimento) {
     this.valorRecebimento = valorRecebimento;
 }
 
-public String getDataRecebimento() {
+public LocalDate getDataRecebimento() {
     return dataRecebimento;
 }
 
-public void setDataRecebimento(String dataRecebimento) {
+public void setDataRecebimento(LocalDate dataRecebimento) {
     this.dataRecebimento = dataRecebimento;
 }
 

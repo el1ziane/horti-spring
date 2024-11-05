@@ -1,5 +1,7 @@
 package com.projeto.model;
 
+import java.time.LocalDate;
+
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -53,9 +55,9 @@ private double valorUnitarioEstoque;
 private double valorTotalEstoque;
 
 @Column(nullable = false)
- @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-@Pattern(regexp = "\\d{2}-\\d{2}-\\d{4}")
-private String dataEstoque;
+@NotNull
+@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+private LocalDate dataEstoque;
 
 @NotNull
 @Column(length = 10, nullable = false)
@@ -115,11 +117,11 @@ public void setValorTotalEstoque(double valorTotalEstoque) {
 }
 
 
-public String getDataEstoque() {
+public LocalDate getDataEstoque() {
     return dataEstoque;
 }
 
-public void setDataEstoque(String dataEstoque) {
+public void setDataEstoque(LocalDate dataEstoque) {
     this.dataEstoque = dataEstoque;
 }
 

@@ -11,7 +11,7 @@ public class ProdutoMapper {
             return null;
         }
         
-        return new ProdutoDTO(produto.getId(), produto.getCodigo(), produto.getProdutoNome(),produto.getPeso(),produto.getQuantidadeProduto(),produto.getValorProduto());
+        return new ProdutoDTO(produto.getId(), produto.getCodigo(), produto.getProdutoNome(),produto.getPeso(),produto.getQuantidadeProduto(), produto.getQuantidadePorCaixa(),produto.getValorProduto());
     }
 
     public Produto toEntity(ProdutoDTO produtoDTO){
@@ -29,6 +29,7 @@ public class ProdutoMapper {
        produto.setPeso(produtoDTO.peso());
        produto.setQuantidadeProduto(produtoDTO.quantidadeProduto());
        produto.setValorProduto(produtoDTO.valorProduto());
+       produto.setQuantidadePorCaixa(produtoDTO.quantidadePorCaixa());
        return produto;
     }
 }

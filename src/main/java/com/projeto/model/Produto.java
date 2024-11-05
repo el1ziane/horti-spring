@@ -22,6 +22,21 @@ import jakarta.validation.constraints.Size;
 //@Where(clause = "estado = 'Ativo'")
 @SQLRestriction("estado <> 'Inativo'")
 public class Produto {
+
+public Produto() {}
+@Override
+public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    Produto produto = (Produto) obj;
+    return id != null && id.equals(produto.id); // Assume que 'id' é o identificador único
+}
+
+@Override
+public int hashCode() {
+    return getClass().hashCode();
+}
+
 @Id
 @GeneratedValue(strategy = GenerationType.AUTO)
 @JsonProperty("_id")
@@ -39,17 +54,22 @@ private Long codigo;
 private String produtoNome;
 
 @NotNull
-@Min(0)
+@Min(1)
 @Column(nullable = false)
 private double peso;
 
 @NotNull
-@Min(10)
+@Min(1)
 @Column(nullable = false)
 private int quantidadeProduto;
 
 @NotNull
-@Min(0)
+@Min(1)
+@Column(nullable = false)
+private int quantidadePorCaixa;
+
+@NotNull
+@Min(1)
 @Column(nullable = false)
 private double valorProduto;
 
@@ -98,6 +118,13 @@ public void setQuantidadeProduto(int quantidadeProduto) {
     this.quantidadeProduto = quantidadeProduto;
 }
 
+public int getQuantidadePorCaixa() {
+    return quantidadePorCaixa;
+}
+
+public void setQuantidadePorCaixa(int quantidadePorCaixa) {
+    this.quantidadePorCaixa = quantidadePorCaixa;
+}
 public double getValorProduto() {
     return valorProduto;
 }
