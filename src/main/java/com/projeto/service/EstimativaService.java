@@ -63,14 +63,16 @@ public class EstimativaService {
     }
     
     private Double calcularResultado(Estimativa estimativa) {
+        if (estimativa.getProdutoEstimativa() == null) {
+            throw new IllegalArgumentException("Produto deve estar associado à estimativa.");
+        }
         if (estimativa.getTipoEntrada().equals(Status.PESO)) {
-            // Cálculo: dividir o peso estimado pelo peso de cada bandeja (produto)
-            return estimativa.getPesoEstimativa() / estimativa.getProduto().getPeso();
+            return estimativa.getPesoEstimativa() / estimativa.getProdutoEstimativa().getPeso();
         } else if (estimativa.getTipoEntrada().equals(Status.CAIXA)) {
-            // Cálculo para caixas (ajustar conforme a necessidade)
-            return (double) (estimativa.getCaixaEstimativa() * estimativa.getProduto().getQuantidadePorCaixa());
+            return (double) (estimativa.getCaixaEstimativa() * estimativa.getProdutoEstimativa().getQuantidadePorCaixa());
         }
         return 0.0;
     }
+    
 
 }

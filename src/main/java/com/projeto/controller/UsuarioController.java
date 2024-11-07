@@ -116,5 +116,5 @@ public ResponseEntity<UsuarioDTO> getUsuarioLogado() {
         }
     }
     
-    
+  
 }

@@ -2,17 +2,23 @@ package com.projeto.service;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.projeto.model.Usuario;
+import com.projeto.repository.UsuarioRepository;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
+import jakarta.annotation.PostConstruct;
 @Service
 public class AuthService {
+     @Autowired
+    private UsuarioRepository usuarioRepository;
 private static final String SECRET_KEY = "sua-chave-secreta"; // use uma chave forte e mantenha-a segura
-
+ private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     public String gerarToken(Usuario usuario) {
         Date dataExpiracao = new Date(System.currentTimeMillis() + 3600000);
 
@@ -73,5 +79,34 @@ private static final String SECRET_KEY = "sua-chave-secreta"; // use uma chave f
             return true; // Considera o token expirado em caso de erro
         }
     }
+    
+    /*/ @PostConstruct
+    public void criarUsuarioPadrao() {
+        if (usuarioRepository.count() == 0) {  // Verifica se já existe um usuário, para evitar duplicação
+            // Senha padrão
+            String senhaPadrao = "senha123"; 
+
+            // Codifica a senha
+            String senhaCodificada = passwordEncoder.encode(senhaPadrao);
+            System.out.println("Senha codificada: " + senhaCodificada); // Log da senha codificada
+
+            // Cria um novo usuário
+            Usuario usuario = new Usuario();
+            usuario.setEmail("eliziane@edu.unifil.br");
+            usuario.setNome("Usuário Padrão");
+            usuario.setSenha(senhaCodificada);
+
+            // Log do usuário antes de salvar
+            System.out.println("Tentando salvar o usuário: " + usuario.getEmail());
+            
+            // Salva o usuário no banco de dados
+            usuarioRepository.save(usuario);
+            
+            // Log após salvar
+            System.out.println("Usuário salvo com sucesso: " + usuario.getEmail());
+        } else {
+            System.out.println("Usuário já existe no banco de dados.");
+        }
+    }*/
     
 }

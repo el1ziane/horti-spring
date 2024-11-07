@@ -40,8 +40,6 @@ public class Venda {
     @Column(nullable = false)
     private Long codigoVenda;
 
- 
-
     @ManyToOne 
     @JoinColumn(name = "produto_venda_id", nullable = false)
     private Produto produtoVenda;  

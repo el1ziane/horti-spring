@@ -43,7 +43,7 @@ private Long codigoProducao;
 private int quantidadeProducao;
 
 @ManyToOne 
-@JoinColumn
+@JoinColumn(name = "produto_producao_id", nullable = false)
 private Produto produtoProducao;
 
 @Column(nullable = false)

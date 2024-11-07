@@ -48,8 +48,8 @@ public class ProducaoService {
         return producaoRepository.findById(id).map(producaoMapper::toDTO)
         .orElseThrow(()-> new RecordNotFoundException(id));
     }
-    public Produto findByProdutoNome(@NotNull @NotBlank String nomeProduto) {
-        return produtoRepository.findByProdutoNome(nomeProduto)
+    public Produto findByProdutoNome(@NotNull @NotBlank String produtoNome) {
+        return produtoRepository.findByProdutoNome(produtoNome)
                 .orElseThrow(() -> new RecordNotFoundException("Produto não encontrado!"));
     }    
     
@@ -60,10 +60,10 @@ public class ProducaoService {
                 .orElseThrow(() -> new RecordNotFoundException("Produto não encontrado!"));
     
      
-        Producao novaProducao = producaoMapper.toEntity(producaoDTO);
-        novaProducao.setCodigoProducao(produto.getCodigo());
+        Producao producao = producaoMapper.toEntity(producaoDTO);
+        producao.setCodigoProducao(produto.getCodigo());
     
-        Producao producaoSalva = producaoRepository.save(novaProducao);
+        Producao producaoSalva = producaoRepository.save(producao);
     
         // Verifica se já existe um estoque para o produto
         Estoque estoque = estoqueRepository.findByCodigoEstoque(produto.getCodigo())
@@ -99,7 +99,7 @@ estoque.setValorUnitarioEstoque(produto.getValorProduto()); // Certifique-se de 
             
             // Obtém o produto associado à produção
             Produto produto = produtoRepository.findByProdutoNome(producaoDTO.produtoProducao().getProdutoNome())
-                    .orElseThrow(() -> new RecordNotFoundException("Produto não encontrado!"));
+            .orElseThrow(() -> new RecordNotFoundException("Produto não encontrado!"));
             
             // Atualiza os dados da produção
             Integer quantidadeAntiga = registroEncontrado.getQuantidadeProducao();
@@ -107,36 +107,37 @@ estoque.setValorUnitarioEstoque(produto.getValorProduto()); // Certifique-se de 
             registroEncontrado.setQuantidadeProducao(producaoDTO.quantidadeProducao());
             registroEncontrado.setProdutoProducao(producaoDTO.produtoProducao());
             registroEncontrado.setDataProducao(producaoDTO.dataProducao());
-            
-            // Salva a produção atualizada
-            Producao producaoAtualizada = producaoRepository.save(registroEncontrado);
-            
-            // Verifica se já existe um estoque para o produto
-            Estoque estoque = estoqueRepository.findByCodigoEstoque(produto.getCodigo())
-                    .orElseThrow(() -> new RecordNotFoundException("Estoque não encontrado para o produto."));
-            
-            // Atualiza a quantidade no estoque
-            Integer novaQuantidade = producaoDTO.quantidadeProducao();
-            
-            // Atualiza o estoque: soma ou subtrai conforme a nova quantidade
-            estoque.setQuantidadeEstoque(estoque.getQuantidadeEstoque() - quantidadeAntiga + novaQuantidade);
-            estoque.setDataEstoque(producaoDTO.dataProducao());
-            estoque.setProdutoEstoque(produto); // Usa o produto que foi produzido
-            
-              
-    // Atribui o valor unitário do produto ao estoque
-    estoque.setValorUnitarioEstoque(produto.getValorProduto()); // Assegura que o valor unitário do produto é atribuído
-    
-    // Calcula o valor total (quantidade * valor unitário)
-    double valorTotal = estoque.getQuantidadeEstoque() * estoque.getValorUnitarioEstoque();
-    estoque.setValorTotalEstoque(valorTotal);
-            // Salva as atualizações do estoque
-            estoqueRepository.save(estoque);
-            
-            // Retorna o DTO da produção atualizada
-            return producaoMapper.toDTO(producaoAtualizada);
-            
+
+              // Verifica se já existe um estoque para o produto
+              Estoque estoque = estoqueRepository.findByCodigoEstoque(produto.getCodigo())
+              .orElseThrow(() -> new RecordNotFoundException("Estoque não encontrado para o produto."));
+      
+      // Atualiza a quantidade no estoque
+      Integer novaQuantidade = producaoDTO.quantidadeProducao();
+      
+      // Atualiza o estoque: soma ou subtrai conforme a nova quantidade
+      estoque.setQuantidadeEstoque(estoque.getQuantidadeEstoque() - quantidadeAntiga + novaQuantidade);
+      estoque.setDataEstoque(producaoDTO.dataProducao());
+      estoque.setProdutoEstoque(produto); // Usa o produto que foi produzido
+      
+        
+// Atribui o valor unitário do produto ao estoque
+estoque.setValorUnitarioEstoque(produto.getValorProduto()); // Assegura que o valor unitário do produto é atribuído
+
+// Calcula o valor total (quantidade * valor unitário)
+double valorTotal = estoque.getQuantidadeEstoque() * estoque.getValorUnitarioEstoque();
+estoque.setValorTotalEstoque(valorTotal);
+      // Salva as atualizações do estoque
+      estoqueRepository.save(estoque);
+
+            return producaoMapper.toDTO(producaoRepository.save(registroEncontrado));
         }).orElseThrow(() -> new RecordNotFoundException(id));
+            // Salva a produção atualizada
+            //Producao producaoAtualizada = producaoRepository.save(registroEncontrado);
+            
+          
+            
+           
     }
     
         

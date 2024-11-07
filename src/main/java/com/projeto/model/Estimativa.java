@@ -31,20 +31,18 @@ public class Estimativa {
 @JsonProperty("_id")
 private Long id;
 
-@NotNull
-@NotBlank
-@Size(min = 3, max =100)
-@Column(length = 100, nullable = false)
-private String produtoEstimativa;
+@ManyToOne 
+@JoinColumn(name = "produto_estimativa_id", nullable = false)
+private Produto produtoEstimativa;
 
 //@NotNull
 //@Min(0)
-@Column(nullable = false)
+@Column
 private Double pesoEstimativa;
 
 //@NotNull
 //@Min(10)
-@Column(nullable = false)
+@Column
 private Integer caixaEstimativa;
 
 @Column(nullable = false)
@@ -59,18 +57,14 @@ private Double resultado;
 @Convert(converter = EstadoConverter.class)
 private Estado estado = Estado.ATIVO;
 
-@ManyToOne // ou @OneToOne dependendo da necessidade
-    @JoinColumn(name = "produto_id", nullable = false) // chave estrangeira para produto
-    private Produto produto;  // Associa a estimativa ao produto
 
-    // Getters e setters...
     
-    public Produto getProduto() {
-        return produto;
+    public Produto getProdutoEstimativa() {
+        return produtoEstimativa;
     }
 
-    public void setProduto(Produto produto) {
-        this.produto = produto;
+    public void setProdutoEstimativa(Produto produtoEstimativa) {
+        this.produtoEstimativa = produtoEstimativa;
     }
 
 public Long getId() {
@@ -79,14 +73,6 @@ public Long getId() {
 
 public void setId(Long id) {
     this.id = id;
-}
-
-public String getProdutoEstimativa() {
-    return produtoEstimativa;
-}
-
-public void setProdutoEstimativa(String produtoEstimativa) {
-    this.produtoEstimativa = produtoEstimativa;
 }
 
 public Double getPesoEstimativa() {
