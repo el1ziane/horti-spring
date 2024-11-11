@@ -14,58 +14,54 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projeto.dto.RecebimentoDTO;
-import com.projeto.model.Produto;
-import com.projeto.service.RecebimentoService;
+import com.projeto.dto.CompraDTO;
+import com.projeto.service.CompraService;
+
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping("/api/recebimentos")
+@RequestMapping("/api/compras")
 @CrossOrigin(origins = "http://localhost:4200")
-public class RecebimentoController {
+public class CompraController {
     
-    private final RecebimentoService recebimentoService;
+    private final CompraService compraService;
 
-    public RecebimentoController(RecebimentoService recebimentoService){
-        this.recebimentoService = recebimentoService;
+    public CompraController(CompraService compraService){
+        this.compraService = compraService;
     }
     @GetMapping
-    public List<RecebimentoDTO> lista() {
-        return recebimentoService.lista();
+    public List<CompraDTO> lista() {
+        return compraService.lista();
     }
 
     @GetMapping("/{id}")
-    public RecebimentoDTO findById(@PathVariable @NotNull @Positive Long id){
-        return recebimentoService.findById(id);
-
+    public CompraDTO findById(@PathVariable @NotNull @Positive Long id){
+        return compraService.findById(id);
     }
-    
-
     //medoto
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public RecebimentoDTO adicionar(@RequestBody @Valid RecebimentoDTO recebimento){
-        System.out.println(recebimento);
-        return recebimentoService.adicionar(recebimento);
+    public CompraDTO adicionar(@RequestBody @Valid CompraDTO compra){
+        System.out.println(compra);
+        return compraService.adicionar(compra);
     }
     @PutMapping("/{id}")
-    public RecebimentoDTO editar(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid RecebimentoDTO recebimento){
-        return recebimentoService.editar(id, recebimento);
+    public CompraDTO editar(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid CompraDTO compra){
+        return compraService.editar(id, compra);
     }
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void excluir(@PathVariable @NotNull @Positive Long id){
-        recebimentoService.excluir(id);
+        compraService.excluir(id);
     }
 
     @GetMapping("/total-compras-pendentes")
     public ResponseEntity<Double> getTotalComprasPendentes() {
-        double totalRecebimento = recebimentoService.getTotalComprasPendentes();
-        return ResponseEntity.ok(totalRecebimento);
+        double totalCompra = compraService.getTotalComprasPendentes();
+        return ResponseEntity.ok(totalCompra);
     }
 }

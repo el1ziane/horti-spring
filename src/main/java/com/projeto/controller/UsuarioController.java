@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projeto.dto.FornecedorDTO;
 import com.projeto.dto.UsuarioDTO;
 import com.projeto.model.Usuario;
 import com.projeto.service.AuthService;

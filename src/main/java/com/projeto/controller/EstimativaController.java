@@ -27,10 +27,10 @@ import jakarta.validation.constraints.Positive;
 @RequestMapping("/api/estimativa")
 @CrossOrigin(origins = "http://localhost:4200")
 public class EstimativaController {
-    
+
     private final EstimativaService estimativaService;
 
-    public EstimativaController(EstimativaService estimativaService){
+    public EstimativaController(EstimativaService estimativaService) {
         this.estimativaService = estimativaService;
     }
 
@@ -40,14 +40,13 @@ public class EstimativaController {
     }
 
     @GetMapping("/{id}")
-    public EstimativaDTO findById(@PathVariable @NotNull @Positive Long id){
+    public EstimativaDTO findById(@PathVariable @NotNull @Positive Long id) {
         return estimativaService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Estimativa calcular(@RequestBody @Valid Estimativa estimativa){
+    public Estimativa calcular(@RequestBody @Valid Estimativa estimativa) {
         return estimativaService.calcular(estimativa);
-}
-
+    }
 }

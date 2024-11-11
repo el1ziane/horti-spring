@@ -1,5 +1,7 @@
 package com.projeto.model;
 
+import java.time.LocalDate;
+
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -24,97 +26,96 @@ import jakarta.validation.constraints.Pattern;
 @Entity
 
 @SQLDelete(sql = "UPDATE Despesa SET estado = 'Inativo' WHERE id=?")
-//@Where(clause = "estado = 'Ativo'")
+// @Where(clause = "estado = 'Ativo'")
 @SQLRestriction("estado <> 'Inativo'")
 public class Despesa {
     @Id
-@GeneratedValue(strategy = GenerationType.AUTO)
-@JsonProperty("_id")
-private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty("_id")
+    private Long id;
 
-@NotBlank
-@Column(length = 100, nullable = false)
-private String fornecedorDespesa;
+    @NotBlank
+    @Column(length = 100, nullable = false)
+    private String fornecedorDespesa;
 
-@NotBlank
-@Column(length = 100, nullable = false)
-private String descricaoDespesa;
+    @NotBlank
+    @Column(length = 100, nullable = false)
+    private String descricaoDespesa;
 
-@NotNull
-@Min(0)
-@Column(nullable = false)
-private double valorDespesa;
+    @NotNull
+    @Min(0)
+    @Column(nullable = false)
+    private double valorDespesa;
 
-@Column(nullable = false)
-@NotNull
- @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-@Pattern(regexp = "\\d{2}-\\d{2}-\\d{4}")
-private String dataDespesa;
+    @Column(nullable = false)
+    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private LocalDate dataDespesa;
 
-@Column(nullable = false)
-@Convert(converter = StatusConverter.class)
-private Status statusDespesa;
+    @Column(nullable = false)
+    @Convert(converter = StatusConverter.class)
+    private Status statusDespesa;
 
-@NotNull
-@Column(length = 10, nullable = false)
-@Convert(converter = EstadoConverter.class)
-private Estado estado = Estado.ATIVO;
+    @NotNull
+    @Column(length = 10, nullable = false)
+    @Convert(converter = EstadoConverter.class)
+    private Estado estado = Estado.ATIVO;
 
-public Long getId() {
-    return id;
-}
+    public Long getId() {
+        return id;
+    }
 
-public void setId(Long id) {
-    this.id = id;
-}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-public String getFornecedorDespesa() {
-    return fornecedorDespesa;
-    
-}
+    public String getFornecedorDespesa() {
+        return fornecedorDespesa;
 
-public void setFornecedorDespesa(String fornecedorDespesa) {
-    this.fornecedorDespesa = fornecedorDespesa;
-}
+    }
 
-public String getDescricaoDespesa() {
-    return descricaoDespesa;
-}
+    public void setFornecedorDespesa(String fornecedorDespesa) {
+        this.fornecedorDespesa = fornecedorDespesa;
+    }
 
-public void setDescricaoDespesa(String descricaoDespesa) {
-    this.descricaoDespesa = descricaoDespesa;
-}
+    public String getDescricaoDespesa() {
+        return descricaoDespesa;
+    }
 
-public double getValorDespesa() {
-    return valorDespesa;
-}
+    public void setDescricaoDespesa(String descricaoDespesa) {
+        this.descricaoDespesa = descricaoDespesa;
+    }
 
-public void setValorDespesa(double valorDespesa) {
-    this.valorDespesa = valorDespesa;
-}
+    public double getValorDespesa() {
+        return valorDespesa;
+    }
 
-public String getDataDespesa() {
-    return dataDespesa;
-}
+    public void setValorDespesa(double valorDespesa) {
+        this.valorDespesa = valorDespesa;
+    }
 
-public void setDataDespesa(String dataDespesa) {
-    this.dataDespesa = dataDespesa;
-}
+    public LocalDate getDataDespesa() {
+        return dataDespesa;
+    }
 
-public Status getStatusDespesa() {
-    return statusDespesa;
-}
+    public void setDataDespesa(LocalDate dataDespesa) {
+        this.dataDespesa = dataDespesa;
+    }
 
-public void setStatusDespesa(Status statusDespesa) {
-    this.statusDespesa = statusDespesa;
-}
+    public Status getStatusDespesa() {
+        return statusDespesa;
+    }
 
-public Estado getEstado() {
-    return estado;
-}
+    public void setStatusDespesa(Status statusDespesa) {
+        this.statusDespesa = statusDespesa;
+    }
 
-public void setEstado(Estado estado) {
-    this.estado = estado;
-}
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
 
 }

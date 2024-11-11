@@ -8,19 +8,20 @@ import com.projeto.model.Estimativa;
 
 @Component
 public class EstimativaMapper {
-    public EstimativaDTO toDTO(Estimativa estimativa){
-        if(estimativa == null){
+    public EstimativaDTO toDTO(Estimativa estimativa) {
+        if (estimativa == null) {
             return null;
         }
-        return new EstimativaDTO(estimativa.getId(), estimativa.getProdutoEstimativa(),estimativa.getPesoEstimativa(),estimativa.getCaixaEstimativa(), estimativa.getResultado(), estimativa.getTipoEntrada().getValue());
+        return new EstimativaDTO(estimativa.getId(), estimativa.getProdutoEstimativa(), estimativa.getPesoEstimativa(),
+                estimativa.getCaixaEstimativa(), estimativa.getResultado(), estimativa.getTipoEntrada().getValue());
     }
 
-    public Estimativa toEntity(EstimativaDTO estimativaDTO){
-        if(estimativaDTO == null){
+    public Estimativa toEntity(EstimativaDTO estimativaDTO) {
+        if (estimativaDTO == null) {
             return null;
         }
         Estimativa estimativa = new Estimativa();
-        if (estimativaDTO.id() != null){
+        if (estimativaDTO.id() != null) {
             estimativa.setId(estimativaDTO.id());
         }
         estimativa.setProdutoEstimativa(estimativaDTO.produtoEstimativa());
@@ -29,6 +30,7 @@ public class EstimativaMapper {
         estimativa.setTipoEntrada(convertStatusValue(estimativaDTO.tipoEntrada()));
         return estimativa;
     }
+
     public Status convertStatusValue(String value) {
         if (value == null) {
             return null;

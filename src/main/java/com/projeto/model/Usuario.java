@@ -19,7 +19,6 @@ public class Usuario {
     @JsonProperty("_id")
     private Long id;
 
-   
     @Column(nullable = false)
     private String nome;
 
@@ -33,8 +32,8 @@ public class Usuario {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = true) // Opcional, pois o token pode não estar presente inicialmente
-    private String token; // Adiciona o campo para armazenar o token
+    @Column(nullable = true)
+    private String token;
 
     // Getters e Setters
     public Long getId() {
@@ -70,10 +69,10 @@ public class Usuario {
     }
 
     public String getToken() {
-        return token; // Método getter para o token
+        return token;
     }
 
     public void setToken(String token) {
-        this.token = token; // Método setter para o token
+        this.token = token;
     }
 }

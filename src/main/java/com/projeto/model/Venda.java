@@ -20,16 +20,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+
 import jakarta.validation.constraints.Min;
 
 @Entity
 @SQLDelete(sql = "UPDATE Venda SET estado = 'Inativo' WHERE id=?")
 @SQLRestriction("estado <> 'Inativo'")
 public class Venda {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("_id")
@@ -40,9 +39,9 @@ public class Venda {
     @Column(nullable = false)
     private Long codigoVenda;
 
-    @ManyToOne 
+    @ManyToOne
     @JoinColumn(name = "produto_venda_id", nullable = false)
-    private Produto produtoVenda;  
+    private Produto produtoVenda;
 
     @NotNull
     @Min(1)
@@ -64,7 +63,7 @@ public class Venda {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate dataFinal;
 
-    @Column(length = 20,nullable = false)
+    @Column(length = 20, nullable = false)
     @Convert(converter = StatusConverter.class)
     private Status statusVenda;
 
@@ -74,7 +73,8 @@ public class Venda {
     private Estado estado = Estado.ATIVO;
 
     // Construtor sem argumentos
-    public Venda() {}
+    public Venda() {
+    }
 
     // Getters e Setters
 
@@ -93,7 +93,6 @@ public class Venda {
     public void setCodigoVenda(Long codigoVenda) {
         this.codigoVenda = codigoVenda;
     }
-
 
     public Produto getProdutoVenda() {
         return produtoVenda;

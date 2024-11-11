@@ -2,66 +2,33 @@ package com.projeto.model;
 
 import java.time.LocalDate;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
-
 public class Faturamento {
-@Id
-@GeneratedValue(strategy = GenerationType.AUTO)
-@JsonProperty("_id")
-private Long id;
-
-private String produtoFat;
-
-
-
-    private int vendaFat;
-
    
+    private Long id;
 
-    private Double valorFat; 
+    private String produtoFat;
 
-
-
-    private int prodFat;
-
-
-
-    private Double vcompraFat; 
-
-
-    private Double lucroFat; 
-
- 
-
-    private Integer perdaFat;
+    private Integer vendaFat = 0;       // Definindo valor inicial
+    private Double valorFat = 0.0;      // Definindo valor inicial
+    private Integer prodFat = 0;        // Definindo valor inicial
+    private Double vcompraFat = 0.0;    // Definindo valor inicial
+    private Double lucroFat = 0.0;      // Definindo valor inicial
+    private Integer perdaFat = 0;       // Definindo valor inicial
 
     private LocalDate dataFat;
 
-    public LocalDate getDataFat(){
+    public LocalDate getDataFat() {
         return dataFat;
     }
 
-    public void setDataFat(LocalDate dataFat){
+    public void setDataFat(LocalDate dataFat) {
         this.dataFat = dataFat;
     }
 
     public Long getId() {
         return id;
     }
-    
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -122,5 +89,4 @@ private String produtoFat;
         this.perdaFat = perdaFat;
     }
 
-    
 }

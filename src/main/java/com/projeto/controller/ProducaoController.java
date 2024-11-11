@@ -29,42 +29,44 @@ import jakarta.validation.constraints.Positive;
 @RequestMapping("/api/producao")
 
 public class ProducaoController {
-       private final ProducaoService producaoService;
+    private final ProducaoService producaoService;
 
-    public ProducaoController(ProducaoService producaoService){
+    public ProducaoController(ProducaoService producaoService) {
         this.producaoService = producaoService;
     }
+
     @GetMapping
     public List<ProducaoDTO> lista() {
         return producaoService.lista();
     }
 
     @GetMapping("/{id}")
-    public ProducaoDTO findById(@PathVariable @NotNull @Positive Long id){
+    public ProducaoDTO findById(@PathVariable @NotNull @Positive Long id) {
         return producaoService.findById(id);
-
     }
+
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/produto/{produtoNome}")
     public Produto findByProdutoNome(@PathVariable @NotNull @NotBlank String produtoNome) {
         return producaoService.findByProdutoNome(produtoNome);
     }
-    
-    
-    //medoto
+
+    // medoto
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ProducaoDTO adicionar(@RequestBody @Valid ProducaoDTO producao){
+    public ProducaoDTO adicionar(@RequestBody @Valid ProducaoDTO producao) {
         System.out.println(producao);
         return producaoService.adicionar(producao);
     }
+
     @PutMapping("/{id}")
-    public ProducaoDTO editar(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid ProducaoDTO producao){
+    public ProducaoDTO editar(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid ProducaoDTO producao) {
         return producaoService.editar(id, producao);
     }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable @NotNull @Positive Long id){
+    public void excluir(@PathVariable @NotNull @Positive Long id) {
         producaoService.excluir(id);
     }
 }

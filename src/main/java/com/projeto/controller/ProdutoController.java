@@ -25,38 +25,38 @@ import jakarta.validation.constraints.Positive;
 @RequestMapping("/api/produto")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ProdutoController {
-      private final ProdutoService produtoService;
+    private final ProdutoService produtoService;
 
-    public ProdutoController(ProdutoService produtoService){
+    public ProdutoController(ProdutoService produtoService) {
         this.produtoService = produtoService;
     }
-    
-    
+
     @GetMapping
     public List<ProdutoDTO> lista() {
         return produtoService.lista();
     }
 
     @GetMapping("/{id}")
-    public ProdutoDTO findById(@PathVariable @NotNull @Positive Long id){
+    public ProdutoDTO findById(@PathVariable @NotNull @Positive Long id) {
         return produtoService.findById(id);
-
     }
-    //medoto
+
+    // medoto
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ProdutoDTO adicionar(@RequestBody @Valid ProdutoDTO produto){
+    public ProdutoDTO adicionar(@RequestBody @Valid ProdutoDTO produto) {
         System.out.println(produto);
         return produtoService.adicionar(produto);
     }
+
     @PutMapping("/{id}")
-    public ProdutoDTO editar(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid ProdutoDTO produto){
+    public ProdutoDTO editar(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid ProdutoDTO produto) {
         return produtoService.editar(id, produto);
     }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable @NotNull @Positive Long id){
+    public void excluir(@PathVariable @NotNull @Positive Long id) {
         produtoService.excluir(id);
     }
-    
 }

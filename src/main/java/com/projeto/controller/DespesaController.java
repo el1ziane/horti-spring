@@ -40,7 +40,6 @@ public class DespesaController {
     @GetMapping("/{id}")
     public DespesaDTO findById(@PathVariable @NotNull @Positive Long id){
         return despesaService.findById(id);
-
     }
    
     //medoto

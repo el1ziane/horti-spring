@@ -20,121 +20,115 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+
 @Entity
 
 @SQLDelete(sql = "UPDATE Estoque SET estado = 'Inativo' WHERE id=?")
-//@Where(clause = "estado = 'Ativo'")
+// @Where(clause = "estado = 'Ativo'")
 @SQLRestriction("estado <> 'Inativo'")
 public class Estoque {
-@Id
-@GeneratedValue(strategy = GenerationType.AUTO)
-@JsonProperty("_id")
-private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty("_id")
+    private Long id;
 
+    @Min(10)
+    @Column(nullable = false)
+    private Long codigoEstoque;
 
-@Min(10)
-@Column(nullable = false)
-private Long codigoEstoque;
+    @ManyToOne
+    @JoinColumn(name = "produto_id", nullable = false)
+    private Produto produtoEstoque;
 
+    @Column(nullable = false)
+    private int quantidadeEstoque;
 
+    @Min(0)
+    @Column(nullable = false)
+    private double valorUnitarioEstoque;
 
- @ManyToOne
-@JoinColumn(name = "produto_id", nullable = false)  
-private Produto produtoEstoque;
+    @Min(0)
+    @Column(nullable = false)
+    private double valorTotalEstoque;
 
-@Column(nullable = false)
-private int quantidadeEstoque;
+    @Column(nullable = false)
+    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private LocalDate dataEstoque;
 
-@Min(0)
-@Column(nullable = false)
-private double valorUnitarioEstoque;
+    @NotNull
+    @Column(length = 10, nullable = false)
+    @Convert(converter = EstadoConverter.class)
+    private Estado estado = Estado.ATIVO;
+   
+    public Long getId() {
+        return id;
+    }
 
-@Min(0)
-@Column(nullable = false)
-private double valorTotalEstoque;
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-@Column(nullable = false)
-@NotNull
-@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-private LocalDate dataEstoque;
+    public Long getCodigoEstoque() {
+        return codigoEstoque;
+    }
 
-@NotNull
-@Column(length = 10, nullable = false)
-@Convert(converter = EstadoConverter.class)
-private Estado estado = Estado.ATIVO;
- // Getters e setters
+    public void setCodigoEstoque(Long codigoEstoque) {
+        this.codigoEstoque = codigoEstoque;
+    }
 
- public Long getId() {
-    return id;
-}
+    public Produto getProdutoEstoque() {
+        return produtoEstoque;
+    }
 
-public void setId(Long id) {
-    this.id = id;
-}
+    public void setProdutoEstoque(Produto produtoEstoque) {
+        this.produtoEstoque = produtoEstoque;
+        recalcularValorTotal();
+    }
 
-public Long getCodigoEstoque() {
-    return codigoEstoque;
-}
+    public int getQuantidadeEstoque() {
+        return quantidadeEstoque;
+    }
 
-public void setCodigoEstoque(Long codigoEstoque) {
-    this.codigoEstoque = codigoEstoque;
-}
+    public void setQuantidadeEstoque(int quantidadeEstoque) {
+        this.quantidadeEstoque = quantidadeEstoque;
+        recalcularValorTotal(); 
+    }
 
-public Produto getProdutoEstoque() {
-    return produtoEstoque;
-}
+    public double getValorUnitarioEstoque() {
+        return valorUnitarioEstoque;
+    }
 
-public void setProdutoEstoque(Produto produtoEstoque) {
-    this.produtoEstoque = produtoEstoque;
-    recalcularValorTotal(); // Recalcula o valor total sempre que o produto é alterado
-}
+    public void setValorUnitarioEstoque(double valorUnitarioEstoque) {
+        this.valorUnitarioEstoque = valorUnitarioEstoque;
+        recalcularValorTotal(); 
+    }
 
-public int getQuantidadeEstoque() {
-    return quantidadeEstoque;
-}
+    public double getValorTotalEstoque() {
+        return valorTotalEstoque;
+    }
 
-public void setQuantidadeEstoque(int quantidadeEstoque) {
-    this.quantidadeEstoque = quantidadeEstoque;
-    recalcularValorTotal(); // Recalcula o valor total sempre que a quantidade muda
-}
+    public void setValorTotalEstoque(double valorTotalEstoque) {
+        this.valorTotalEstoque = valorTotalEstoque;
+    }
 
-public double getValorUnitarioEstoque() {
-    return valorUnitarioEstoque;
-}
+    public LocalDate getDataEstoque() {
+        return dataEstoque;
+    }
 
-public void setValorUnitarioEstoque(double valorUnitarioEstoque) {
-    this.valorUnitarioEstoque = valorUnitarioEstoque;
-    recalcularValorTotal(); // Recalcula o valor total sempre que o valor unitário muda
-}
+    public void setDataEstoque(LocalDate dataEstoque) {
+        this.dataEstoque = dataEstoque;
+    }
 
-public double getValorTotalEstoque() {
-    return valorTotalEstoque;
-}
+    public Estado getEstado() {
+        return estado;
+    }
 
-public void setValorTotalEstoque(double valorTotalEstoque) {
-    this.valorTotalEstoque = valorTotalEstoque;
-}
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
 
-
-public LocalDate getDataEstoque() {
-    return dataEstoque;
-}
-
-public void setDataEstoque(LocalDate dataEstoque) {
-    this.dataEstoque = dataEstoque;
-}
-
-public Estado getEstado() {
-    return estado;
-}
-
-public void setEstado(Estado estado) {
-    this.estado = estado;
-}
-
-// Método para recalcular o valor total do estoque
-private void recalcularValorTotal() {
-    this.valorTotalEstoque = this.quantidadeEstoque * this.valorUnitarioEstoque;
-}
+    private void recalcularValorTotal() {
+        this.valorTotalEstoque = this.quantidadeEstoque * this.valorUnitarioEstoque;
+    }
 }

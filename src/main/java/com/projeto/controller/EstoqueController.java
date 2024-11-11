@@ -23,9 +23,9 @@ import jakarta.validation.constraints.Positive;
 @RequestMapping("/api/estoque")
 @CrossOrigin(origins = "http://localhost:4200")
 public class EstoqueController {
-      private final EstoqueService estoqueService;
+    private final EstoqueService estoqueService;
 
-    public EstoqueController(EstoqueService estoqueService){
+    public EstoqueController(EstoqueService estoqueService) {
         this.estoqueService = estoqueService;
     }
 
@@ -33,18 +33,19 @@ public class EstoqueController {
     public List<EstoqueDTO> lista() {
         return estoqueService.lista();
     }
+
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/produto/{produtoNome}")
     public Produto findByProdutoNome(@PathVariable @NotNull @NotBlank String produtoNome) {
         return estoqueService.findByProdutoNome(produtoNome);
     }
-    
 
     @GetMapping("/{id}")
-    public EstoqueDTO findById(@PathVariable @NotNull @Positive Long id){
+    public EstoqueDTO findById(@PathVariable @NotNull @Positive Long id) {
         return estoqueService.findById(id);
     }
-    @GetMapping("/quantidade") 
+
+    @GetMapping("/quantidade")
     public ResponseEntity<Integer> getQuantidadeEstoque() {
         int quantidade = estoqueService.getQuantidadeEstoque();
         return ResponseEntity.ok(quantidade);
@@ -52,14 +53,9 @@ public class EstoqueController {
 
     @PutMapping("/{id}/remover")
     public ResponseEntity<EstoqueDTO> removerQuantidadeEstoque(
-        @PathVariable Long id,
-        @RequestBody int quantidade) {
+            @PathVariable Long id,
+            @RequestBody int quantidade) {
         EstoqueDTO atualizado = estoqueService.removerQuantidadeEstoque(id, quantidade);
         return ResponseEntity.ok(atualizado);
     }
-    
-
-
 }
-
-

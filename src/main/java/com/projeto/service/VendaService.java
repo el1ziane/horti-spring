@@ -54,26 +54,19 @@ public class VendaService {
 
     public double getValorTotalVendas() {
         return vendaRepository.findAll().stream()
-                .mapToDouble(Venda::getValorVenda) // Altere 'getValor' para o método que retorna o valor da venda
+                .mapToDouble(Venda::getValorVenda) 
                 .sum();
     }
 
     public VendaDTO adicionar(@Valid @NotNull VendaDTO vendaDTO) {
-        System.out.println("VendaDTO recebido: " + vendaDTO);
-
-        // Obter o produto a partir do nome
+       // System.out.println("VendaDTO recebido: " + vendaDTO);
         Produto produto = produtoRepository.findByProdutoNome(vendaDTO.produtoVenda().getProdutoNome())
                 .orElseThrow(() -> new RecordNotFoundException("Produto não encontrado!"));
 
-        // Calcular o valor total
         double valorTotal = vendaDTO.valorVenda() * vendaDTO.quantidadeVenda();
-
-        // Mapear para a entidade Venda
         Venda venda = vendaMapper.toEntity(vendaDTO);
-        venda.setValorVenda(valorTotal); // Armazenar o valor total na venda
-
-        // Associar o produto à venda
-        venda.setProdutoVenda(produto); // Certifique-se de ter um método setProduto na entidade Venda
+        venda.setValorVenda(valorTotal);
+        venda.setProdutoVenda(produto); 
 
         try {
             Venda vendaSalva = vendaRepository.save(venda);
@@ -90,25 +83,20 @@ public class VendaService {
 
     public VendaDTO editar(@NotNull @Positive Long id, @Valid VendaDTO venda) {
         return vendaRepository.findById(id).map(registroEncontrado -> {
-            // Calcular o novo valor total
             double novoValorTotal = venda.valorVenda() * venda.quantidadeVenda();
-
             registroEncontrado.setCodigoVenda(venda.codigoVenda());
             registroEncontrado.setProdutoVenda(venda.produtoVenda());
             registroEncontrado.setQuantidadeVenda(venda.quantidadeVenda());
-            registroEncontrado.setValorVenda(novoValorTotal); // Atualiza o valor com o total calculado
+            registroEncontrado.setValorVenda(novoValorTotal); 
             registroEncontrado.setDataInicial(venda.dataInicial());
             registroEncontrado.setDataFinal(venda.dataFinal());
             registroEncontrado.setStatusVenda(vendaMapper.convertStatusValue(venda.statusVenda()));
-
+    
             return vendaMapper.toDTO(vendaRepository.save(registroEncontrado));
         }).orElseThrow(() -> new RecordNotFoundException(id));
     }
-
+    
     public void excluir(@NotNull @Positive Long id) {
-
         vendaRepository.delete(vendaRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
-
     }
-
 }

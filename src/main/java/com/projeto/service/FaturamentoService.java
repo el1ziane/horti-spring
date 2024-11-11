@@ -11,25 +11,24 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.projeto.enums.Status;
+import com.projeto.model.Compra;
 import com.projeto.model.Faturamento;
 import com.projeto.model.Producao;
-import com.projeto.model.Recebimento;
+
 import com.projeto.model.Venda;
+import com.projeto.repository.CompraRepository;
 import com.projeto.repository.ProducaoRepository;
-import com.projeto.repository.RecebimentoRepository;
+
 import com.projeto.repository.VendaRepository;
 
 @Service
 public class FaturamentoService {
     @Autowired
     private VendaRepository vendaRepository;
-
     @Autowired
-    private RecebimentoRepository recebimentoRepository;
+    private CompraRepository compraRepository;
     @Autowired
     private ProducaoRepository producaoRepository;
-
   
     public List<Faturamento> gerarFinanceiroPorMes(String mesAno) {
         if (mesAno == null || !mesAno.matches("\\d{4}-\\d{2}")) {
@@ -41,7 +40,7 @@ public class FaturamentoService {
         
         // Obtenha todas as vendas, compras e produções dentro do mês selecionado
         List<Venda> vendas = vendaRepository.findByDataInicialBetween(mes.withDayOfMonth(1), mes.withDayOfMonth(mes.lengthOfMonth()));
-        List<Recebimento> compras = recebimentoRepository.findByDataRecebimentoBetween(mes.withDayOfMonth(1), mes.withDayOfMonth(mes.lengthOfMonth()));
+        List<Compra> compras = compraRepository.findByDataCompraBetween(mes.withDayOfMonth(1), mes.withDayOfMonth(mes.lengthOfMonth()));
         List<Producao> producoes = producaoRepository.findByDataProducaoBetween(mes.withDayOfMonth(1), mes.withDayOfMonth(mes.lengthOfMonth()));
     
         Map<String, Faturamento> faturamentoMap = new HashMap<>();
@@ -58,7 +57,6 @@ public class FaturamentoService {
                 quantidadeAtual = 0; // Se for null, inicie com 0
             }
             faturamento.setVendaFat(quantidadeAtual + venda.getQuantidadeVenda());
-
          
     //  // Debug: Log o valor da venda atual
     System.out.println("Produto: " + produtoNome + ", Valor Venda: " + venda.getValorVenda());
@@ -98,17 +96,16 @@ public class FaturamentoService {
         }
     
         // Processar compras
-        for (Recebimento recebimento : compras) {
-            String produtoNome = recebimento.getProduto().getProdutoNome(); // Certifique-se de que retorna um objeto correto
+        for (Compra recebimento : compras) {
+            String produtoNome = recebimento.getProdutoCompra().getProdutoNome(); // Certifique-se de que retorna um objeto correto
             faturamentoMap.putIfAbsent(produtoNome, new Faturamento());
             
             Faturamento faturamento = faturamentoMap.get(produtoNome);                   
     //  // Debug: Log o valor da venda atual
-    System.out.println("Produto: " + produtoNome + ", Valor Venda: " + recebimento.getValorRecebimento());
-
+    //System.out.println("Produto: " + produtoNome + ", Valor Venda: " + recebimento.getValorCompra());
     // Acesse e some o valor total
     double valorCompraAtual = faturamento.getVcompraFat() == null ? 0.0 : faturamento.getVcompraFat(); // Corrigido para Double
-    faturamento.setVcompraFat(valorCompraAtual + recebimento.getValorRecebimento());
+    faturamento.setVcompraFat(valorCompraAtual + recebimento.getValorCompra());
     
             faturamento.setLucroFat(faturamento.getValorFat() - faturamento.getVcompraFat());
         }
@@ -122,4 +119,3 @@ public class FaturamentoService {
    
     
 }
-

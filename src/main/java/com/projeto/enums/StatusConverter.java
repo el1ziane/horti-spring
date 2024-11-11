@@ -25,6 +25,5 @@ public class StatusConverter implements AttributeConverter<Status, String>{
                 .filter(status -> status.getValue().equals(value))
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
-    }
-    
+    }   
 }

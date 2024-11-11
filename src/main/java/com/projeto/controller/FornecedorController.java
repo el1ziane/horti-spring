@@ -29,34 +29,38 @@ public class FornecedorController {
 
     private final FornecedorService fornecedorService;
 
-    public FornecedorController(FornecedorService fornecedorService){
+    public FornecedorController(FornecedorService fornecedorService) {
         this.fornecedorService = fornecedorService;
     }
+
     @GetMapping
     public List<FornecedorDTO> lista() {
         return fornecedorService.lista();
     }
 
     @GetMapping("/{id}")
-    public FornecedorDTO findById(@PathVariable @NotNull @Positive Long id){
+    public FornecedorDTO findById(@PathVariable @NotNull @Positive Long id) {
         return fornecedorService.findById(id);
 
     }
-    //medoto
+
+    // medoto
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Fornecedor adicionar(@RequestBody @Valid FornecedorDTO fornecedor){
+    public Fornecedor adicionar(@RequestBody @Valid FornecedorDTO fornecedor) {
         System.out.println(fornecedor);
         return fornecedorService.adicionar(fornecedor);
     }
+
     @PutMapping("/{id}")
-    public FornecedorDTO editar(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid FornecedorDTO fornecedor){
+    public FornecedorDTO editar(@PathVariable @NotNull @Positive Long id,
+            @RequestBody @Valid FornecedorDTO fornecedor) {
         return fornecedorService.editar(id, fornecedor);
     }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable @NotNull @Positive Long id){
+    public void excluir(@PathVariable @NotNull @Positive Long id) {
         fornecedorService.excluir(id);
     }
-    
 }

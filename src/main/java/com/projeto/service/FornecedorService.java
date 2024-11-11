@@ -19,44 +19,50 @@ import jakarta.validation.constraints.Positive;
 @Validated
 @SuppressWarnings("null")
 public class FornecedorService {
-    
-    private final FornecedorRepository fornecedorRepository; 
+
+    private final FornecedorRepository fornecedorRepository;
     private final FornecedorMapper fornecedorMapper;
 
-    public FornecedorService(FornecedorRepository fornecedorRepository, FornecedorMapper fornecedorMapper){
+    public FornecedorService(FornecedorRepository fornecedorRepository, FornecedorMapper fornecedorMapper) {
         this.fornecedorRepository = fornecedorRepository;
         this.fornecedorMapper = fornecedorMapper;
     }
+
     public List<FornecedorDTO> lista() {
         return fornecedorRepository.findAll()
-        .stream()
-        .map(fornecedorMapper::toDTO)
-        .collect(Collectors.toList());
+                .stream()
+                .map(fornecedorMapper::toDTO)
+                .collect(Collectors.toList());
     }
-    public FornecedorDTO findById(@NotNull @Positive Long id){
+
+    public FornecedorDTO findById(@NotNull @Positive Long id) {
         return fornecedorRepository.findById(id).map(fornecedorMapper::toDTO)
-        .orElseThrow(()-> new RecordNotFoundException(id));
+                .orElseThrow(() -> new RecordNotFoundException(id));
     }
-     public Fornecedor adicionar( @Valid @NotNull FornecedorDTO fornecedor){
+
+    public Fornecedor adicionar(@Valid @NotNull FornecedorDTO fornecedor) {
         Fornecedor f = new Fornecedor();
         f.setFornecedorNome(fornecedor.fornecedorNome());
         f.setCnpj(fornecedor.cnpj());
         f.setTelefone(fornecedor.telefone());
         f.setEmail(fornecedor.email());
         return fornecedorRepository.save(f);
-     }
-     public FornecedorDTO editar(@NotNull @Positive Long id, @Valid FornecedorDTO fornecedor){
-        return fornecedorRepository.findById(id).map(registroEncontrado ->{
+    }
+
+    public FornecedorDTO editar(@NotNull @Positive Long id, @Valid FornecedorDTO fornecedor) {
+        return fornecedorRepository.findById(id).map(registroEncontrado -> {
             registroEncontrado.setFornecedorNome(fornecedor.fornecedorNome());
             registroEncontrado.setCnpj(fornecedor.cnpj());
             registroEncontrado.setTelefone(fornecedor.telefone());
             registroEncontrado.setEmail(fornecedor.email());
             return fornecedorMapper.toDTO(fornecedorRepository.save(registroEncontrado));
-        }).orElseThrow(()-> new RecordNotFoundException(id));
-     }
-    public void excluir(@NotNull @Positive Long id){
+        }).orElseThrow(() -> new RecordNotFoundException(id));
+    }
 
-        fornecedorRepository.delete(fornecedorRepository.findById(id).orElseThrow(()-> new RecordNotFoundException(id)));
+    public void excluir(@NotNull @Positive Long id) {
+
+        fornecedorRepository
+                .delete(fornecedorRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
 
     }
 }

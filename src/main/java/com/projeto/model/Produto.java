@@ -19,126 +19,131 @@ import jakarta.validation.constraints.Size;
 @Entity
 
 @SQLDelete(sql = "UPDATE Produto SET estado = 'Inativo' WHERE id=?")
-//@Where(clause = "estado = 'Ativo'")
+// @Where(clause = "estado = 'Ativo'")
 @SQLRestriction("estado <> 'Inativo'")
 public class Produto {
 
-public Produto() {}
-@Override
-public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null || getClass() != obj.getClass()) return false;
-    Produto produto = (Produto) obj;
-    return id != null && id.equals(produto.id); // Assume que 'id' é o identificador único
-}
+    public Produto() {
+    }
 
-@Override
-public int hashCode() {
-    return getClass().hashCode();
-}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        Produto produto = (Produto) obj;
+        return id != null && id.equals(produto.id);
+    }
 
-@Id
-@GeneratedValue(strategy = GenerationType.AUTO)
-@JsonProperty("_id")
-private Long id;
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 
-@NotNull
-@Min(10)
-@Column(nullable = false)
-private Long codigo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty("_id")
+    private Long id;
 
-@NotNull
-@NotBlank
-@Size(min = 3, max =100)
-@Column(length = 100, nullable = false)
-private String produtoNome;
+    @NotNull
+    @Min(10)
+    @Column(nullable = false)
+    private Long codigo;
 
-@NotNull
-@Min(1)
-@Column(nullable = false)
-private double peso;
+    @NotNull
+    @NotBlank
+    @Size(min = 3, max = 100)
+    @Column(length = 100, nullable = false)
+    private String produtoNome;
 
-@NotNull
-@Min(1)
-@Column(nullable = false)
-private int quantidadeProduto;
+    @NotNull
+    @Min(1)
+    @Column(nullable = false)
+    private double peso;
 
-@NotNull
-@Min(1)
-@Column(nullable = false)
-private int quantidadePorCaixa;
+    @NotNull
+    @Min(1)
+    @Column(nullable = false)
+    private int quantidadeProduto;
 
-@NotNull
-@Min(1)
-@Column(nullable = false)
-private double valorProduto;
+    @NotNull
+    @Min(1)
+    @Column(nullable = false)
+    private int quantidadePorCaixa;
 
-@NotNull
-@Column(length = 10, nullable = false)
-@Convert(converter = EstadoConverter.class)
-private Estado estado = Estado.ATIVO;
+    @NotNull
+    @Min(1)
+    @Column(nullable = false)
+    private double valorProduto;
 
-public Long getId() {
-    return id;
-}
+    @NotNull
+    @Column(length = 10, nullable = false)
+    @Convert(converter = EstadoConverter.class)
+    private Estado estado = Estado.ATIVO;
 
-public void setId(Long id) {
-    this.id = id;
-}
+    public Long getId() {
+        return id;
+    }
 
-public Long getCodigo() {
-    return codigo;
-}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-public void setCodigo(Long codigo) {
-    this.codigo = codigo;
-}
+    public Long getCodigo() {
+        return codigo;
+    }
 
-public String getProdutoNome() {
-    return produtoNome;
-}
+    public void setCodigo(Long codigo) {
+        this.codigo = codigo;
+    }
 
-public void setProdutoNome(String produtoNome) {
-    this.produtoNome = produtoNome;
-}
+    public String getProdutoNome() {
+        return produtoNome;
+    }
 
-public double getPeso() {
-    return peso;
-}
+    public void setProdutoNome(String produtoNome) {
+        this.produtoNome = produtoNome;
+    }
 
-public void setPeso(double peso) {
-    this.peso = peso;
-}
+    public double getPeso() {
+        return peso;
+    }
 
-public int getQuantidadeProduto() {
-    return quantidadeProduto;
-}
+    public void setPeso(double peso) {
+        this.peso = peso;
+    }
 
-public void setQuantidadeProduto(int quantidadeProduto) {
-    this.quantidadeProduto = quantidadeProduto;
-}
+    public int getQuantidadeProduto() {
+        return quantidadeProduto;
+    }
 
-public int getQuantidadePorCaixa() {
-    return quantidadePorCaixa;
-}
+    public void setQuantidadeProduto(int quantidadeProduto) {
+        this.quantidadeProduto = quantidadeProduto;
+    }
 
-public void setQuantidadePorCaixa(int quantidadePorCaixa) {
-    this.quantidadePorCaixa = quantidadePorCaixa;
-}
-public double getValorProduto() {
-    return valorProduto;
-}
+    public int getQuantidadePorCaixa() {
+        return quantidadePorCaixa;
+    }
 
-public void setValorProduto(double valorProduto) {
-    this.valorProduto = valorProduto;
-}
+    public void setQuantidadePorCaixa(int quantidadePorCaixa) {
+        this.quantidadePorCaixa = quantidadePorCaixa;
+    }
 
-public Estado getEstado() {
-    return estado;
-}
+    public double getValorProduto() {
+        return valorProduto;
+    }
 
-public void setEstado(Estado estado) {
-    this.estado = estado;
-}
+    public void setValorProduto(double valorProduto) {
+        this.valorProduto = valorProduto;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
 
 }

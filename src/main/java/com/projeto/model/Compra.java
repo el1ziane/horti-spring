@@ -22,20 +22,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
-
-
 
 @Entity
 //@Table(name = "recebimentos")
 
-@SQLDelete(sql = "UPDATE Recebimento SET estado = 'Inativo' WHERE id=?")
+@SQLDelete(sql = "UPDATE Compra SET estado = 'Inativo' WHERE id=?")
 //@Where(clause = "estado = 'Ativo'")
 @SQLRestriction("estado <> 'Inativo'")
 
-public class Recebimento {
+public class Compra {
 @Id
 @GeneratedValue(strategy = GenerationType.AUTO)
 @JsonProperty("_id")
@@ -43,28 +39,27 @@ private Long id;
 
 @NotNull
 @NotBlank
-@Size(min = 3, max =100)
 @Column(length = 100, nullable = false)
-private String fornecedorRec;
+private String fornecedorCompra;
 
 @ManyToOne 
 @JoinColumn
-private Produto produto;
+private Produto produtoCompra;
 
 @NotNull
 @Min(1)
 @Column(nullable = false)
-private int quantidadeRecebimento;
+private int quantidadeCompra;
 
 @NotNull
 @Min(0)
 @Column(nullable = false)
-private double valorRecebimento;
+private double valorCompra;
 
 @Column(nullable = false)
 @NotNull
 @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-private LocalDate dataRecebimento;
+private LocalDate dataCompra;
 
 //@Pattern(regexp = "Pago|A faturar")
 @Column(nullable = false)
@@ -84,44 +79,44 @@ public void setId(Long id) {
     this.id = id;
 }
 
-public String getFornecedorRec() {
-    return fornecedorRec;
+public String getFornecedorCompra() {
+    return fornecedorCompra;
 }
 
-public void setFornecedorRec(String fornecedorRec) {
-    this.fornecedorRec = fornecedorRec;
+public void setFornecedorCompra(String fornecedorCompra) {
+    this.fornecedorCompra = fornecedorCompra;
 }
 
-public Produto getProduto() {
-    return produto;
+public Produto getProdutoCompra() {
+    return produtoCompra;
 }
 
-public void setProduto(Produto produto) {
-    this.produto = produto;
+public void setProdutoCompra(Produto produtoCompra) {
+    this.produtoCompra = produtoCompra;
 }
 
-public int getQuantidadeRecebimento() {
-    return quantidadeRecebimento;
+public int getQuantidadeCompra() {
+    return quantidadeCompra;
 }
 
-public void setQuantidadeRecebimento(int quantidadeRecebimento) {
-    this.quantidadeRecebimento = quantidadeRecebimento;
+public void setQuantidadeCompra(int quantidadeCompra) {
+    this.quantidadeCompra = quantidadeCompra;
 }
 
-public double getValorRecebimento() {
-    return valorRecebimento;
+public double getValorCompra() {
+    return valorCompra;
 }
 
-public void setValorRecebimento(double valorRecebimento) {
-    this.valorRecebimento = valorRecebimento;
+public void setValorCompra(double valorCompra) {
+    this.valorCompra = valorCompra;
 }
 
-public LocalDate getDataRecebimento() {
-    return dataRecebimento;
+public LocalDate getDataCompra() {
+    return dataCompra;
 }
 
-public void setDataRecebimento(LocalDate dataRecebimento) {
-    this.dataRecebimento = dataRecebimento;
+public void setDataCompra(LocalDate dataCompra) {
+    this.dataCompra = dataCompra;
 }
 
 public Status getStatus() {
@@ -139,6 +134,4 @@ public Estado getEstado() {
 public void setEstado(Estado estado) {
     this.estado = estado;
 }
-
-
 }
