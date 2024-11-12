@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.validation.annotation.Validated;
 
 import com.projeto.dto.ProducaoDTO;
@@ -16,6 +17,7 @@ import com.projeto.repository.EstoqueRepository;
 import com.projeto.repository.ProducaoRepository;
 import com.projeto.repository.ProdutoRepository;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -116,7 +118,7 @@ public class ProducaoService {
             return producaoMapper.toDTO(producaoRepository.save(registroEncontrado));
         }).orElseThrow(() -> new RecordNotFoundException(id));
     }
-
+    @Transactional
     public void excluir(@NotNull @Positive Long id) {
         producaoRepository.findById(id).ifPresent(producao -> {
 

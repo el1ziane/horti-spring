@@ -5,9 +5,12 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.projeto.model.Estoque;
+import com.projeto.model.Produto;
 
 public interface EstoqueRepository extends JpaRepository<Estoque, Long> {
     Optional<Estoque> findByCodigoEstoque(Long codigoEstoque);
+
+    void deleteByProdutoEstoque(Produto produto);
     
 
 

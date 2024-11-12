@@ -7,7 +7,15 @@ import org.springframework.validation.annotation.Validated;
 import com.projeto.dto.ProdutoDTO;
 import com.projeto.dto.mapper.ProdutoMapper;
 import com.projeto.exception.RecordNotFoundException;
+import com.projeto.model.Produto;
+import com.projeto.repository.CompraRepository;
+import com.projeto.repository.EstimativaRepository;
+import com.projeto.repository.EstoqueRepository;
+import com.projeto.repository.ProducaoRepository;
 import com.projeto.repository.ProdutoRepository;
+import com.projeto.repository.VendaRepository;
+
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -18,9 +26,21 @@ import jakarta.validation.constraints.Positive;
 public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
+    private final VendaRepository vendaRepository;
+    private final ProducaoRepository producaoRepository;
+    private final CompraRepository compraRepository;
+    private final EstoqueRepository estoqueRepository;
+    private final EstimativaRepository estimativaRepository;
     private final ProdutoMapper produtoMapper;
 
-    public ProdutoService(ProdutoRepository produtoRepository, ProdutoMapper produtoMapper) {
+    public ProdutoService(ProdutoRepository produtoRepository, ProdutoMapper produtoMapper,
+            VendaRepository vendaRepository, ProducaoRepository producaoRepository, CompraRepository compraRepository,
+            EstoqueRepository estoqueRepository, EstimativaRepository estimativaRepository) {
+        this.estimativaRepository = estimativaRepository;
+        this.vendaRepository = vendaRepository;
+        this.producaoRepository = producaoRepository;
+        this.compraRepository = compraRepository;
+        this.estoqueRepository = estoqueRepository;
         this.produtoRepository = produtoRepository;
         this.produtoMapper = produtoMapper;
     }
@@ -53,10 +73,17 @@ public class ProdutoService {
         }).orElseThrow(() -> new RecordNotFoundException(id));
 
     }
-
+    @Transactional
     public void excluir(@NotNull @Positive Long id) {
+    Produto produto = produtoRepository.findById(id)
+        .orElseThrow(() -> new RecordNotFoundException(id));
+    vendaRepository.deleteByProdutoVenda(produto);
+    producaoRepository.deleteByProdutoProducao(produto);
+    compraRepository.deleteByProdutoCompra(produto);
+    estoqueRepository.deleteByProdutoEstoque(produto);
+    estimativaRepository.deleteByProdutoEstimativa(produto);
 
-        produtoRepository.delete(produtoRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
+    produtoRepository.delete(produto);
+}
 
-    }
 }

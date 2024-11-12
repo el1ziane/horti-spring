@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 
 import com.projeto.dto.FornecedorDTO;
 import com.projeto.dto.mapper.FornecedorMapper;
+import com.projeto.exception.DuplicateCnpjException;
 import com.projeto.exception.RecordNotFoundException;
 import com.projeto.model.Fornecedor;
 import com.projeto.repository.FornecedorRepository;
@@ -41,6 +42,10 @@ public class FornecedorService {
     }
 
     public Fornecedor adicionar(@Valid @NotNull FornecedorDTO fornecedor) {
+        fornecedorRepository.findByCnpj(fornecedor.cnpj())
+        .ifPresent(existing -> {
+            throw new DuplicateCnpjException("O CNPJ " + fornecedor.cnpj() + " já está cadastrado!");
+        });
         Fornecedor f = new Fornecedor();
         f.setFornecedorNome(fornecedor.fornecedorNome());
         f.setCnpj(fornecedor.cnpj());

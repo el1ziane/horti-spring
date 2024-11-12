@@ -121,13 +121,12 @@ public class UsuarioService {
                 String token = authService.gerarToken(usuario);
                 String linkRecuperacao = "http://localhost:4200/redefinir-senha?token=" + token;
                 usuario.setToken(token);
-                // System.out.println("Token gerado: " + token); // Adicione este log
+                // System.out.println("Token gerado: " + token);
 
                 usuarioRepository.save(usuario);
                 // System.out.println("Token salvo para o usuário: " + usuario.getEmail());
                 Optional<Usuario> usuarioSalvo = usuarioRepository.findById(usuario.getId());
-                // System.out.println("Token salvo no banco: " + usuarioSalvo.get().getToken());
-
+               
                 MimeMessage message = javaMailSender.createMimeMessage();
                 MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
